@@ -5,8 +5,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Phone } from "lucide-react";
 import { JobApplyModal } from "@/components/JobApplyModal";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { localeUrl, pageMetadata } from "@/lib/seo";
+import { JOB_IDS } from "@/lib/jobs";
 
-const JOB_IDS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"];
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
@@ -25,7 +27,18 @@ export async function generateMetadata({
   const { locale, id } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "Jobs" });
-  return { title: t(`job${id}Title` as never) };
+  const title = t(`job${id}Title` as never);
+  const description = [
+    t(`job${id}Company` as never),
+    t(`job${id}Salary` as never),
+    t(`job${id}Access` as never),
+  ].join("｜");
+  return pageMetadata({
+    locale,
+    path: `/jobs/${id}`,
+    title: `${title} | 株式会社サントー`,
+    description,
+  });
 }
 
 /* ── Label + value row for info table ── */
@@ -100,6 +113,13 @@ export default async function JobDetailPage({
 
   return (
     <div className="bg-white text-slate-800">
+      <BreadcrumbJsonLd
+        items={[
+          { name: d("breadcrumbHome"), url: localeUrl(locale, "") },
+          { name: d("breadcrumbJobs"), url: localeUrl(locale, "/jobs") },
+          { name: job.title },
+        ]}
+      />
       {/* ══════ Header Nav ══════ */}
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[768px] items-center justify-between px-[15px] py-[10px]">

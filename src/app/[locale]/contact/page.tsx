@@ -30,13 +30,21 @@ export default function ContactPage() {
     const type = data.get("type") as string;
     const message = data.get("message") as string;
 
-    const subject = t("mailSubject", { type });
+    // <option> の value は英語スラッグなので、メールには翻訳済みラベルを使う
+    const typeLabels: Record<string, string> = {
+      jobseeker: t("typeJobseeker"),
+      employer: t("typeEmployer"),
+      other: t("typeOther"),
+    };
+    const typeLabel = typeLabels[type] ?? type;
+
+    const subject = t("mailSubject", { type: typeLabel });
     const body = [
       `${t("nameLabel")}: ${name}`,
       company ? `${t("companyLabel")}: ${company}` : "",
       `${t("emailFormLabel")}: ${email}`,
       phone ? `${t("phoneFormLabel")}: ${phone}` : "",
-      `${t("typeLabel")}: ${type}`,
+      `${t("typeLabel")}: ${typeLabel}`,
       "",
       `${t("messageLabel")}:`,
       message,

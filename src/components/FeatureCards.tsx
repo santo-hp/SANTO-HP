@@ -55,7 +55,7 @@ function FeatureRow({
         <div className="rounded-t-2xl bg-slate-100 border border-b-0 border-slate-200 px-4 py-2">
           <div className="flex justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/extracted_curly_line_straight.png" alt="お悩み" className="h-16 w-16 object-contain" />
+            <img src="/images/extracted_curly_line_straight.png" alt="" className="h-16 w-16 object-contain" />
           </div>
           <p className="whitespace-pre-line text-center text-[16px] font-bold leading-[1.7] text-slate-700 sm:text-[20px]">
             {feature.problem}
@@ -87,7 +87,7 @@ function FeatureRow({
           <div className="flex items-center gap-4">
             <div className="shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/extracted_curly_line_straight.png" alt="お悩み" className="h-20 w-20 object-contain" />
+              <img src="/images/extracted_curly_line_straight.png" alt="" className="h-20 w-20 object-contain" />
             </div>
             <p className="whitespace-pre-line text-[22px] font-bold leading-[1.7] text-slate-700">
               {feature.problem}
@@ -242,7 +242,7 @@ export function FeatureCards() {
               key={i}
               type="button"
               onClick={() => scrollToCard(i)}
-              aria-label={`カード ${i + 1} を表示`}
+              aria-label={t("cardDotLabel", { number: i + 1 })}
               className={`h-2 rounded-full transition-all ${
                 activeIndex === i ? "w-6 bg-santo-navy" : "w-2 bg-santo-navy/25"
               }`}

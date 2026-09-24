@@ -1,16 +1,8 @@
 import type { MetadataRoute } from "next";
+import { JOB_IDS } from "@/lib/jobs";
+import { LOCALES, languageAlternates, localeUrl } from "@/lib/seo";
 
 export const dynamic = "force-static";
-
-const BASE = "https://santo-hp.co.jp";
-const LOCALES = ["ja", "en", "es", "pt", "zh"] as const;
-const DEFAULT_LOCALE = "ja";
-
-// Job IDs match generateStaticParams in src/app/[locale]/jobs/[id]/page.tsx
-const JOB_IDS = [
-  "1", "2", "3", "4", "5", "6", "7", "8",
-  "9", "10", "11", "12", "13", "14", "15", "16",
-];
 
 type ChangeFreq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
 
@@ -32,53 +24,29 @@ const STATIC_PAGES: StaticPage[] = [
   { path: "/privacy", changeFrequency: "monthly", priority: 0.3 },
 ];
 
-function buildUrl(locale: string, path: string): string {
-  // localePrefix: "always" — every locale gets a prefix, including the default
-  const localePart = `/${locale}`;
-  // Trailing slash to match next.config.ts trailingSlash: true
-  return `${BASE}${localePart}${path}/`;
-}
-
-function buildAlternates(path: string): Record<string, string> {
-  const languages: Record<string, string> = {};
-  for (const locale of LOCALES) {
-    languages[locale] = buildUrl(locale, path);
-  }
-  // x-default points to the default locale
-  languages["x-default"] = buildUrl(DEFAULT_LOCALE, path);
-  return languages;
-}
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
   const entries: MetadataRoute.Sitemap = [];
 
-  // Static pages: one entry per locale per page, with hreflang alternates
-  for (const page of STATIC_PAGES) {
-    const alternates = buildAlternates(page.path);
+  const pages: Array<Pick<StaticPage, "path" | "changeFrequency" | "priority">> = [
+    ...STATIC_PAGES,
+    // Job detail pages. Apply pages are intentionally excluded (noindex).
+    ...JOB_IDS.map((id) => ({
+      path: `/jobs/${id}`,
+      changeFrequency: "weekly" as ChangeFreq,
+      priority: 0.8,
+    })),
+  ];
+
+  for (const page of pages) {
+    const alternates = languageAlternates(page.path);
     for (const locale of LOCALES) {
       entries.push({
-        url: buildUrl(locale, page.path),
+        url: localeUrl(locale, page.path),
         lastModified,
         changeFrequency: page.changeFrequency,
         priority: page.priority,
         alternates: { languages: alternates },
-      });
-    }
-  }
-
-  // Job detail pages. Apply and thanks pages are intentionally excluded.
-  for (const id of JOB_IDS) {
-    const detailPath = `/jobs/${id}`;
-    const detailAlternates = buildAlternates(detailPath);
-
-    for (const locale of LOCALES) {
-      entries.push({
-        url: buildUrl(locale, detailPath),
-        lastModified,
-        changeFrequency: "weekly",
-        priority: 0.8,
-        alternates: { languages: detailAlternates },
       });
     }
   }

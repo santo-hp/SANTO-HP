@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PageHeader } from "@/components/PageHeader";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "About" });
-  return {
+  return pageMetadata({
+    locale,
+    path: "/about",
     title: t("metaTitle"),
     description: t("metaDescription"),
-  };
+  });
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -48,7 +51,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               <div className="aspect-[4/5] w-64 shrink-0 overflow-hidden rounded-2xl sm:w-72">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/ceo_photo_portrait.jpg"
+                  src="/images/ceo_photo_latest.jpg"
                   alt={t("messageName")}
                   className="h-full w-full object-cover object-top"
                 />

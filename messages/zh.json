@@ -1,13 +1,4 @@
 {
-  "Gate": {
-    "title": "欢迎来到SANTO",
-    "subtitle": "您在寻找什么？",
-    "employers": "寻找人才的企业",
-    "employersDesc": "为贵公司推荐最佳人才",
-    "jobseekers": "寻找工作的求职者",
-    "jobseekersDesc": "找到适合您的工作",
-    "skip": "进入首页"
-  },
   "Header": {
     "home": "首页",
     "about": "公司概况",
@@ -70,7 +61,9 @@
     "trustedImagePlaceholder": "图片",
     "trustedCheckText": "在多个网站的\n人才派遣公司\n排名中\n被推荐！",
     "trustedButtonMatching": "在派遣匹配网站查看",
+    "trustedButtonMadeInLocal": "在MADE IN LOCAL查看",
     "trustedButtonShushoku": "在#Shushoku Shiyo查看",
+    "awardImageAlt": "入选2026-2027年度神奈川县代表企业100强",
     "ctaJobseekersBullet1": "制造、物流、行政等多种岗位",
     "ctaJobseekersBullet2": "无经验可，细致的支持",
     "ctaJobseekersBullet3": "社会保险·带薪休假完备",
@@ -100,7 +93,8 @@
     "dispatchTitle": "人才派遣服务",
     "dispatchDesc": "SANTO作为派遣方，统一处理招聘、薪资计算和劳务管理。客户只需专注于工作指挥，大幅降低人才相关成本和精力。",
     "outsourcingTitle": "业务外包服务",
-    "outsourcingDesc": "将业务整体委托的外包服务。我公司配置生产管理负责人，从员工指挥到品质管理全面负责。"
+    "outsourcingDesc": "将业务整体委托的外包服务。我公司配置生产管理负责人，从员工指挥到品质管理全面负责。",
+    "cardDotLabel": "显示第 {number} 张卡片"
   },
   "FeatureCards": {
     "problem1": "第一次做派遣工作很不安……\n担心跟不上工作节奏",
@@ -111,7 +105,8 @@
     "solution2Desc": "迅速满足客户需求，及时推荐最佳人才。灵活应对紧急用人需求。",
     "problem3": "找不到具备所需技能的人才……",
     "solution3Title": "丰富的人才网络",
-    "solution3Desc": "拥有涵盖制造、物流、行政等多种岗位的多元化人才储备，为企业精准匹配。"
+    "solution3Desc": "拥有涵盖制造、物流、行政等多种岗位的多元化人才储备，为企业精准匹配。",
+    "cardDotLabel": "显示第 {number} 张卡片"
   },
   "NewsScroller": {
     "label": "通知",
@@ -236,6 +231,9 @@
     "salaryFrom1800": "¥1,800起",
     "salaryFrom2000": "¥2,000起",
     "employmentType": "雇用形态",
+    "workSchedule": "工作时段",
+    "scheduleDay": "白班",
+    "scheduleNight": "有夜班",
     "workPeriod": "工作期间",
     "features": "特征",
     "freeword": "关键词",
@@ -502,7 +500,8 @@
     "telValue": "0463-24-1722",
     "hoursLabel": "营业时间",
     "hoursValue": "周一至周五 8:00〜17:00",
-    "hoursNote": "※周末及节假日休息"
+    "hoursNote": "※周末及节假日休息",
+    "mapTitle": "株式会社SANTO所在地"
   },
   "Contact": {
     "metaTitle": "联系我们 | 株式会社SANTO",
@@ -950,26 +949,12 @@
     "copiedLabel": "已复制",
     "goToThanks": "前往申请完成页面"
   },
-  "JobThanks": {
-    "pageLabel": "THANK YOU",
-    "pageTitle": "请完成邮件发送",
-    "pageDesc": "仅打开此页面并不代表申请已完成。请在邮件应用中确认内容并点击发送。",
-    "jobSectionLabel": "申请予定职位",
-    "nextStepsTitle": "下一步",
-    "nextStep1": "如果邮件应用已打开，请直接发送邮件。",
-    "nextStep2": "邮件发送后，负责人将确认内容并与您联系。",
-    "nextStep3": "如有急事，请拨打 0463-24-1722。",
-    "backToJobs": "返回职位列表",
-    "callButton": "致电"
-  },
   "LaborInfo": {
     "metaTitle": "劳务派遣事业信息公开 | 株式会社SANTO",
     "metaDescription": "依据日本《劳动者派遣法》第23条第5项进行的信息公开，包括毛利率、教育培训和职业咨询等内容。",
     "pageLabel": "DISCLOSURE",
     "pageTitle": "劳务派遣事业信息公开",
     "pageSubtitle": "根据《劳动者派遣法》第23条第5项提供的信息",
-    "targetPeriod": "对象年度",
-    "targetPeriodValue": "2025年度〜2026年度（2024年8月〜2025年8月）",
     "marginFormulaTitle": "利润率计算公式",
     "marginFormulaDesc": "利润率 =（平均派遣费用 − 派遣劳动者平均工资）÷ 平均派遣费用",
     "marginNote": "利润中包含社会保险费（单位负担部分）、带薪休假费用、福利费、教育培训费、营业利润等。",
@@ -977,7 +962,6 @@
     "marginChartLegalWelfare": "法定福利费",
     "marginChartOtherExpenses": "其他经费（教育培训费等）",
     "marginChartProfit": "营业利润",
-    "marginChartOtherDetail": "教育培训费、福利费、招聘费、劳务管理费、办公费、水电费、车辆费等",
     "dispatchInfoTitle": "劳务派遣事业状况",
     "dispatchWorkers": "派遣劳动者人数",
     "dispatchWorkersValue": "89人",
@@ -1052,8 +1036,10 @@
     "trainingRow7Wage": "有薪",
     "trainingRow7Hours": "24小时",
     "agreementTitle": "⑦ 是否已签订关于派遣劳动者待遇的劳资协定",
-    "agreementDesc": "已签订劳资协定（有效期截止：2027年3月）",
-    "agreementScope": "协定劳动者范围：全体派遣员工"
+    "agreementScope": "协定劳动者范围：全体派遣员工",
+    "targetPeriodNote": "（对象年度：2025年度〜2026年度（2024年8月〜2025年8月））",
+    "marginChartOtherNote": "（教育培训费、福利费、招聘费、劳务管理费、办公费、水电费、车辆费等）",
+    "agreementNote": "※已签订劳资协定（有效期截止：2027年3月）"
   },
   "Privacy": {
     "metaTitle": "隐私政策 | 株式会社SANTO",

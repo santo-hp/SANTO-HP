@@ -1,13 +1,4 @@
 {
-  "Gate": {
-    "title": "Bem-vindo à SANTO",
-    "subtitle": "O que você está procurando?",
-    "employers": "Para Empresas",
-    "employersDesc": "Propomos os melhores talentos para sua empresa",
-    "jobseekers": "Para Candidatos",
-    "jobseekersDesc": "Encontre o trabalho ideal para você",
-    "skip": "Ir para a Página Inicial"
-  },
   "Header": {
     "home": "Início",
     "about": "Sobre Nós",
@@ -70,7 +61,9 @@
     "trustedImagePlaceholder": "Imagem",
     "trustedCheckText": "Destaque em\nrankings de agências\nde trabalho temporário\nem vários sites!",
     "trustedButtonMatching": "Ver no Haken Matching",
+    "trustedButtonMadeInLocal": "Ver no MADE IN LOCAL",
     "trustedButtonShushoku": "Ver no #Shushoku Shiyo",
+    "awardImageAlt": "Selecionada entre as 100 empresas representativas de Kanagawa 2026-2027",
     "ctaJobseekersBullet1": "Ampla variedade de vagas: manufatura, logística, escritório",
     "ctaJobseekersBullet2": "Sem necessidade de experiência, suporte completo",
     "ctaJobseekersBullet3": "Seguro social completo e férias remuneradas",
@@ -100,7 +93,8 @@
     "dispatchTitle": "Serviços de Trabalho Temporário",
     "dispatchDesc": "Como agência de trabalho temporário, a SANTO cuida de tudo, desde o recrutamento até a folha de pagamento e gestão trabalhista. Você pode se concentrar apenas na orientação dos funcionários, reduzindo significativamente custos e esforços.",
     "outsourcingTitle": "Serviços de Terceirização",
-    "outsourcingDesc": "Nosso serviço de terceirização cuida de operações inteiras. Designamos gerentes de produção e oferecemos suporte abrangente, desde a gestão de pessoal até o controle de qualidade."
+    "outsourcingDesc": "Nosso serviço de terceirização cuida de operações inteiras. Designamos gerentes de produção e oferecemos suporte abrangente, desde a gestão de pessoal até o controle de qualidade.",
+    "cardDotLabel": "Mostrar cartão {number}"
   },
   "FeatureCards": {
     "problem1": "Estou preocupado em trabalhar\ncomo temporário pela primeira vez...",
@@ -111,7 +105,8 @@
     "solution2Desc": "Respondemos rapidamente às suas necessidades e propomos prontamente os melhores talentos. Lidamos com flexibilidade com demandas urgentes de pessoal.",
     "problem3": "Não conseguimos encontrar pessoas\ncom as habilidades certas...",
     "solution3Title": "Ampla Rede de Talentos",
-    "solution3Desc": "Mantemos um banco diversificado de talentos em manufatura, logística e funções administrativas. Combinamos as pessoas certas com suas necessidades exatas."
+    "solution3Desc": "Mantemos um banco diversificado de talentos em manufatura, logística e funções administrativas. Combinamos as pessoas certas com suas necessidades exatas.",
+    "cardDotLabel": "Mostrar cartão {number}"
   },
   "NewsScroller": {
     "label": "Notícias",
@@ -236,6 +231,9 @@
     "salaryFrom1800": "¥1.800+",
     "salaryFrom2000": "¥2.000+",
     "employmentType": "Tipo de Contrato",
+    "workSchedule": "Horário de Trabalho",
+    "scheduleDay": "Turno Diurno",
+    "scheduleNight": "Inclui Turno Noturno",
     "workPeriod": "Período de Trabalho",
     "features": "Características",
     "freeword": "Palavra-chave",
@@ -502,7 +500,8 @@
     "telValue": "0463-24-1722",
     "hoursLabel": "Horário de Funcionamento",
     "hoursValue": "Segunda a Sexta 8:00 – 17:00",
-    "hoursNote": "* Fechado nos finais de semana e feriados"
+    "hoursNote": "* Fechado nos finais de semana e feriados",
+    "mapTitle": "Localização da SANTO Co., Ltd."
   },
   "Contact": {
     "metaTitle": "Fale Conosco | SANTO CO., LTD.",
@@ -950,26 +949,12 @@
     "copiedLabel": "Copiado",
     "goToThanks": "Ir para a página de confirmação"
   },
-  "JobThanks": {
-    "pageLabel": "THANK YOU",
-    "pageTitle": "Conclua o envio do e-mail",
-    "pageDesc": "A candidatura não é concluída apenas nesta página. Revise o e-mail e toque em Enviar no seu aplicativo de e-mail.",
-    "jobSectionLabel": "VAGA PARA CANDIDATURA",
-    "nextStepsTitle": "Próximos passos",
-    "nextStep1": "Se o aplicativo de e-mail abriu, envie o e-mail pré-preenchido.",
-    "nextStep2": "Depois que você enviar o e-mail, nossa equipe revisará o conteúdo e entrará em contato.",
-    "nextStep3": "Para assuntos urgentes, ligue para 0463-24-1722.",
-    "backToJobs": "Voltar à lista de vagas",
-    "callButton": "Ligar"
-  },
   "LaborInfo": {
     "metaTitle": "Divulgação sob a Lei de Despacho de Trabalhadores | SANTO CO., LTD.",
     "metaDescription": "Informações divulgadas conforme o Artigo 23(5) da Lei Japonesa de Despacho de Trabalhadores: taxa de margem, formação e consultoria de carreira.",
     "pageLabel": "DIVULGAÇÃO",
     "pageTitle": "Divulgação de Informações sobre Serviços de Trabalho Temporário",
     "pageSubtitle": "Informações fornecidas conforme o Artigo 23, Parágrafo 5 da Lei de Envio de Trabalhadores",
-    "targetPeriod": "Período de Referência",
-    "targetPeriodValue": "FY2025–FY2026 (agosto 2024 – agosto 2025)",
     "marginFormulaTitle": "Fórmula da Taxa de Margem",
     "marginFormulaDesc": "Taxa de Margem = (Taxa Média de Envio − Salário Médio do Trabalhador) ÷ Taxa Média de Envio",
     "marginNote": "A margem inclui contribuições patronais de seguro social, custos de férias remuneradas, benefícios assistenciais, custos de treinamento e lucro operacional.",
@@ -977,7 +962,6 @@
     "marginChartLegalWelfare": "Seguro social obrigatório",
     "marginChartOtherExpenses": "Outras despesas (treinamento, etc.)",
     "marginChartProfit": "Lucro operacional",
-    "marginChartOtherDetail": "Treinamento, benefícios, recrutamento, gestão trabalhista, escritório, serviços, veículos, etc.",
     "dispatchInfoTitle": "Situação do Serviço de Trabalho Temporário",
     "dispatchWorkers": "Número de Trabalhadores Enviados",
     "dispatchWorkersValue": "89 trabalhadores",
@@ -1052,8 +1036,10 @@
     "trainingRow7Wage": "Remunerado",
     "trainingRow7Hours": "24 horas",
     "agreementTitle": "⑦ Se foi celebrado um acordo trabalhista sobre o tratamento dos trabalhadores enviados",
-    "agreementDesc": "Um acordo trabalhista foi celebrado (vigência: março 2027)",
-    "agreementScope": "Âmbito do acordo: Todos os funcionários enviados"
+    "agreementScope": "Âmbito do acordo: Todos os funcionários enviados",
+    "targetPeriodNote": "(Período de Referência: FY2025–FY2026 (agosto 2024 – agosto 2025))",
+    "marginChartOtherNote": "(Treinamento, benefícios, recrutamento, gestão trabalhista, escritório, serviços, veículos, etc.)",
+    "agreementNote": "* Um acordo trabalhista foi celebrado (vigência: março 2027)"
   },
   "Privacy": {
     "metaTitle": "Política de Privacidade | SANTO CO., LTD.",

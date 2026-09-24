@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "LaborInfo" });
-  return {
+  return pageMetadata({
+    locale,
+    path: "/labor-info",
     title: t("metaTitle"),
     description: t("metaDescription"),
-  };
+  });
 }
 
 const pieSegments = [
@@ -132,7 +135,7 @@ export default async function LaborInfoPage({ params }: { params: Promise<{ loca
         {t("pageSubtitle")}
       </p>
       <p className="mb-10 text-sm text-slate-600">
-        （{t("targetPeriod")}：{t("targetPeriodValue")}）
+        {t("targetPeriodNote")}
       </p>
 
       <hr className="mb-8 border-slate-300" />
@@ -150,7 +153,7 @@ export default async function LaborInfoPage({ params }: { params: Promise<{ loca
         <div className="mb-4 rounded border border-slate-200 bg-white p-4">
           <MarginPieChart legendLabels={legendLabels} />
           <p className="mt-4 text-xs text-slate-500">
-            （{t("marginChartOtherDetail")}）
+            {t("marginChartOtherNote")}
           </p>
         </div>
 
@@ -249,7 +252,7 @@ export default async function LaborInfoPage({ params }: { params: Promise<{ loca
           {t("agreementTitle")}
         </h2>
         <p className="mb-1 text-sm text-slate-600">
-          ※{t("agreementDesc")}
+          {t("agreementNote")}
         </p>
         <p className="text-sm text-slate-600">
           {t("agreementScope")}

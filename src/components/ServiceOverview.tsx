@@ -256,7 +256,7 @@ export function ServiceOverview() {
               key={i}
               type="button"
               onClick={() => scrollToCard(i)}
-              aria-label={`カード ${i + 1} を表示`}
+              aria-label={t("cardDotLabel", { number: i + 1 })}
               className={`h-2 rounded-full transition-all ${
                 activeIndex === i ? "w-6 bg-santo-navy" : "w-2 bg-santo-navy/25"
               }`}

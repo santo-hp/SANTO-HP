@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import {
   Phone,
   FileSearch,
@@ -14,10 +15,12 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Employers" });
-  return {
+  return pageMetadata({
+    locale,
+    path: "/employers",
     title: t("metaTitle"),
     description: t("metaDescription"),
-  };
+  });
 }
 
 export default async function EmployersPage({ params }: { params: Promise<{ locale: string }> }) {

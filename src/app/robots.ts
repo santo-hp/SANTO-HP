@@ -1,16 +1,14 @@
 import type { MetadataRoute } from "next";
+import { SITE_BASE } from "@/lib/seo";
 
 export const dynamic = "force-static";
-
-const BASE = "https://santo-hp.co.jp";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/*/jobs/*/thanks/"],
     },
-    sitemap: `${BASE}/sitemap.xml`,
+    sitemap: `${SITE_BASE}/sitemap.xml`,
   };
 }

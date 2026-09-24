@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import {
   ClipboardList,
   MessageSquare,
@@ -9,6 +10,7 @@ import { LinkButton } from "@/components/LinkButton";
 import { CountUpStats } from "@/components/CountUpStats";
 import { PageHeader } from "@/components/PageHeader";
 import { HexMerits } from "@/components/HexMerits";
+import { Suspense } from "react";
 import { JobSearchForm } from "@/components/JobSearchForm";
 import {
   Accordion,
@@ -21,10 +23,12 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Jobseekers" });
-  return {
+  return pageMetadata({
+    locale,
+    path: "/jobseekers",
     title: t("metaTitle"),
     description: t("metaDescription"),
-  };
+  });
 }
 
 export default async function JobseekersPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -94,7 +98,9 @@ export default async function JobseekersPage({ params }: { params: Promise<{ loc
           <h2 className="mb-3 text-2xl font-black tracking-wider text-slate-900 sm:mb-4 sm:text-4xl lg:text-5xl">
             {t("jobTypeTitle")}
           </h2>
-          <JobSearchForm />
+          <Suspense>
+            <JobSearchForm />
+          </Suspense>
         </div>
       </section>
 

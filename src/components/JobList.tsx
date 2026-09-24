@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { ArrowLeft, Star } from "lucide-react";
 import Link from "next/link";
+import { JOB_IDS } from "@/lib/jobs";
 
 // 各求人のフィルタ用メタデータ（言語非依存）
 // area/line/jobType のキーは JobSearchForm と一致させている
@@ -38,6 +39,14 @@ const JOB_META: Record<number, JobMeta> = {
   16: { area: ["samukawa"], line: ["jr_east"], jobType: ["inspection","line"], hourlyMin: 1900, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation"] },
 };
 
+// 現在掲載中の求人を勤務時間帯で分類する。
+// 記載がない求人は日勤のみとして扱い、交替勤務には日勤帯と夜勤帯の両方を含める。
+const JOB_WORK_SCHEDULE: Record<number, string[]> = {
+  10: ["day", "night"],
+  11: ["day", "night"],
+  16: ["day", "night"],
+};
+
 export function JobList() {
   const t = useTranslations("Jobs");
   const locale = useLocale();
@@ -48,9 +57,8 @@ export function JobList() {
   const toggleFav = (id: number) =>
     setFavorites((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
 
-  const JOB_COUNT = 16;
-  const allJobs = Array.from({ length: JOB_COUNT }, (_, i) => {
-    const id = i + 1;
+  const allJobs = JOB_IDS.map((jobId) => {
+    const id = parseInt(jobId, 10);
     return {
       id,
       company: t(`job${id}Company` as never) as string,
@@ -73,6 +81,8 @@ export function JobList() {
   const selArea = parseParam("area");
   const selLine = parseParam("line");
   const selJobType = parseParam("jobType");
+  const selEmployment = parseParam("employment");
+  const selWorkSchedule = parseParam("workSchedule");
   const selSalary = parseParam("salary");
   const selFeatures = parseParam("features");
   const q = searchParams.get("q")?.trim() || "";
@@ -81,13 +91,13 @@ export function JobList() {
   if (selArea.length) activeFilters.push(...selArea);
   if (selLine.length) activeFilters.push(...selLine);
   if (selJobType.length) activeFilters.push(...selJobType);
+  if (selEmployment.length) activeFilters.push(...selEmployment);
+  if (selWorkSchedule.length) activeFilters.push(...selWorkSchedule);
   if (selSalary.length) activeFilters.push(...selSalary);
   if (selFeatures.length) activeFilters.push(...selFeatures);
   if (q) activeFilters.push(q);
 
   // 各フィールドでの絞り込み: 各フィールド内は OR、フィールド間は AND
-  // 注: salaryTypes/employment/period は現在のデータセットで全件同値のため
-  //     UI からも除外し、ここでも絞り込み対象にしない
   const jobs = allJobs.filter((job) => {
     const meta = JOB_META[job.id];
     if (!meta) return false;
@@ -100,6 +110,8 @@ export function JobList() {
     if (!anyIn(selArea, meta.area)) return false;
     if (!anyIn(selLine, meta.line)) return false;
     if (!anyIn(selJobType, meta.jobType)) return false;
+    if (!anyIn(selEmployment, meta.employment)) return false;
+    if (!anyIn(selWorkSchedule, JOB_WORK_SCHEDULE[job.id] ?? ["day"])) return false;
     if (!anyIn(selFeatures, meta.features)) return false;
 
     // 給与レンジ: 選択された最小閾値以上の時給なら OK

@@ -5,21 +5,15 @@ import { usePathname } from "next/navigation";
 import { Phone, Mail, MapPin, Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
+import { LANGUAGES, stripLocalePrefix } from "@/i18n/languages";
 
-const languages = [
-  { code: "ja", label: "日本語" },
-  { code: "en", label: "English" },
-  { code: "zh", label: "中文" },
-  { code: "es", label: "Español" },
-  { code: "pt", label: "Português" },
-];
 
 export function Footer() {
   const t = useTranslations("Footer");
   const tHeader = useTranslations("Header");
   const locale = useLocale();
   const pathname = usePathname();
-  const pathWithoutLocale = pathname.replace(/^\/(ja|en|zh|es|pt)/, "") || "/";
+  const pathWithoutLocale = stripLocalePrefix(pathname);
 
   const localePath = (path: string) => {
     return `/${locale}${path}`;
@@ -122,7 +116,7 @@ export function Footer() {
             </h3>
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <Globe className="h-4 w-4 shrink-0 text-slate-400" />
-              {languages.map((lang) => (
+              {LANGUAGES.map((lang) => (
                 <a
                   key={lang.code}
                   href={switchLocaleHref(lang.code)}

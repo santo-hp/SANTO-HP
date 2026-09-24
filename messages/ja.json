@@ -1,13 +1,4 @@
 {
-  "Gate": {
-    "title": "ようこそ、サントーへ",
-    "subtitle": "どちらをお探しですか？",
-    "employers": "人材をお探しの企業様",
-    "employersDesc": "貴社に最適な人材をご提案します",
-    "jobseekers": "仕事をお探しの方",
-    "jobseekersDesc": "あなたに合ったお仕事を見つけます",
-    "skip": "トップページへ進む"
-  },
   "Header": {
     "home": "ホーム",
     "about": "会社概要",
@@ -29,7 +20,7 @@
   },
   "Home": {
     "metaTitle": "株式会社サントー｜神奈川の人材派遣・採用支援",
-    "metaDescription": "神奈川県平塚市の人材派遣会社サントー。製造・物流・事務などの求人情報や、企業様向けの人材ご提案を行っています。",
+    "metaDescription": "神奈川県平塚市の人材派遣会社、株式会社サントー。製造・物流・事務の求人紹介から企業の人材課題まで、仕事を探す方と企業を丁寧に支援します。",
     "heroLine1": "人と企業をつなぎ,",
     "heroLine2": "未来をつくる。",
     "heroSub1": "求職者と企業の皆様を結ぶ",
@@ -70,7 +61,9 @@
     "trustedImagePlaceholder": "掲載画像",
     "trustedCheckText": "多数サイトの\n人材派遣会社\nランキングに\n掲載されました！",
     "trustedButtonMatching": "派遣マッチングで見る",
+    "trustedButtonMadeInLocal": "MADE IN LOCALで見る",
     "trustedButtonShushoku": "#就職しようで見る",
+    "awardImageAlt": "神奈川を代表する企業100選 2026-2027 選出",
     "ctaJobseekersBullet1": "製造・物流・事務など幅広い職種",
     "ctaJobseekersBullet2": "未経験OK、丁寧なサポート",
     "ctaJobseekersBullet3": "社会保険・有給休暇完備",
@@ -100,7 +93,8 @@
     "dispatchTitle": "人材派遣サービス",
     "dispatchDesc": "サントーが派遣元として、<br></br>採用・給与計算・労務管理まで一括対応。<br></br>お客様は指揮命令のみに集中でき、<br></br>人材に関わるコストと手間を大幅に削減できます。",
     "outsourcingTitle": "業務請負サービス",
-    "outsourcingDesc": "業務ごとお任せいただく請負サービス。<br></br>当社が生産管理責任者を配置し、<br></br>スタッフの指揮命令から品質管理まで<br></br>一貫して対応いたします。"
+    "outsourcingDesc": "業務ごとお任せいただく請負サービス。<br></br>当社が生産管理責任者を配置し、<br></br>スタッフの指揮命令から品質管理まで<br></br>一貫して対応いたします。",
+    "cardDotLabel": "カード {number} を表示"
   },
   "FeatureCards": {
     "problem1": "派遣が初めてで不安…\n仕事についていけるか心配",
@@ -111,7 +105,8 @@
     "solution2Desc": "お客様のご要望に素早くお応えし、最適な人材を速やかにご提案。急な人員<br></br>ニーズにも柔軟に対応いたします。",
     "problem3": "求めるスキルの人材が\nなかなか見つからない…",
     "solution3Title": "豊富な人材ネットワーク",
-    "solution3Desc": "製造・物流・事務など幅広い職種に対応できる多様な人材を豊富に確保。企業様の細かなニーズにもぴったり合う人材をご紹介します。"
+    "solution3Desc": "製造・物流・事務など幅広い職種に対応できる多様な人材を豊富に確保。企業様の細かなニーズにもぴったり合う人材をご紹介します。",
+    "cardDotLabel": "カード {number} を表示"
   },
   "NewsScroller": {
     "label": "お知らせ",
@@ -236,6 +231,9 @@
     "salaryFrom1800": "¥1,800〜",
     "salaryFrom2000": "¥2,000〜",
     "employmentType": "雇用形態",
+    "workSchedule": "勤務時間帯",
+    "scheduleDay": "日勤",
+    "scheduleNight": "夜勤あり",
     "workPeriod": "勤務期間",
     "features": "特徴",
     "freeword": "フリーワード",
@@ -502,7 +500,8 @@
     "telValue": "0463-24-1722",
     "hoursLabel": "営業時間",
     "hoursValue": "月曜日〜金曜日 8:00〜17:00",
-    "hoursNote": "※土日祝日はお休みをいただいております"
+    "hoursNote": "※土日祝日はお休みをいただいております",
+    "mapTitle": "株式会社サントー所在地"
   },
   "Contact": {
     "metaTitle": "お問い合わせ | 株式会社サントー",
@@ -950,26 +949,12 @@
     "copiedLabel": "コピーしました",
     "goToThanks": "応募完了ページへ"
   },
-  "JobThanks": {
-    "pageLabel": "THANK YOU",
-    "pageTitle": "メール送信を完了してください",
-    "pageDesc": "このページだけでは応募は完了していません。メール画面で内容を確認し、送信ボタンを押してください。",
-    "jobSectionLabel": "応募予定の求人",
-    "nextStepsTitle": "次のステップ",
-    "nextStep1": "メールアプリが起動した方は、そのまま送信してください。",
-    "nextStep2": "メール送信後、担当者が内容を確認してご連絡いたします。",
-    "nextStep3": "お急ぎの場合はお電話（0463-24-1722）までご連絡ください。",
-    "backToJobs": "求人一覧に戻る",
-    "callButton": "電話する"
-  },
   "LaborInfo": {
     "metaTitle": "労働者派遣法に基づく情報提供 | 株式会社サントー",
     "metaDescription": "労働者派遣法第23条5項に基づく情報提供。マージン率、教育訓練、キャリアコンサルティング等の情報を公開しています。",
     "pageLabel": "DISCLOSURE",
     "pageTitle": "改正派遣法に基づくマージン率の公開",
     "pageSubtitle": "労働者派遣法第23条5項に基づき、下記の情報を公開いたします。",
-    "targetPeriod": "対象年度",
-    "targetPeriodValue": "令和7年〜令和8年度（令和6年8月〜令和7年8月）",
     "marginFormulaTitle": "マージン率の計算式",
     "marginFormulaDesc": "<nowrap>マージン率 ＝</nowrap><br></br><nowrap>（派遣料金の平均額 − 派遣労働者の賃金の平均額）</nowrap><br></br><nowrap>÷ 派遣料金の平均額</nowrap>",
     "marginNote": "マージンには、営業利益以外に法定福利費、その他経費なども含まれております。",
@@ -977,7 +962,6 @@
     "marginChartLegalWelfare": "法定福利費",
     "marginChartOtherExpenses": "<nowrap>その他の経費</nowrap><br></br><nowrap>（教育訓練費他）</nowrap>",
     "marginChartProfit": "営業利益",
-    "marginChartOtherDetail": "教育訓練費・福利厚生費・募集採用費・労務管理費・事務所費・光熱費・車両費等",
     "dispatchInfoTitle": "派遣事業の状況",
     "dispatchWorkers": "①派遣労働者の数（1日平均）",
     "dispatchWorkersValue": "89名",
@@ -1052,8 +1036,10 @@
     "trainingRow7Wage": "有給",
     "trainingRow7Hours": "24時間",
     "agreementTitle": "⑦派遣労働者の待遇の決定に係る労使協定を締結しているか否かの別",
-    "agreementDesc": "労使協定を締結している（有効期間終期：2027年3月）",
-    "agreementScope": "協定労働者の範囲（派遣従業員全員）"
+    "agreementScope": "協定労働者の範囲（派遣従業員全員）",
+    "targetPeriodNote": "（対象年度：令和7年〜令和8年度（令和6年8月〜令和7年8月））",
+    "marginChartOtherNote": "（教育訓練費・福利厚生費・募集採用費・労務管理費・事務所費・光熱費・車両費等）",
+    "agreementNote": "※労使協定を締結している（有効期間終期：2027年3月）"
   },
   "Privacy": {
     "metaTitle": "プライバシーポリシー | 株式会社サントー",

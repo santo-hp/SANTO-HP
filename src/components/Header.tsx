@@ -8,14 +8,8 @@ import { useTranslations } from "next-intl";
 import { Menu, Phone, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { LANGUAGES, stripLocalePrefix } from "@/i18n/languages";
 
-const languages = [
-  { code: "ja", label: "日本語", flag: "🇯🇵" },
-  { code: "en", label: "English", flag: "🇺🇸" },
-  { code: "zh", label: "中文", flag: "🇨🇳" },
-  { code: "es", label: "Español", flag: "🇪🇸" },
-  { code: "pt", label: "Português", flag: "🇧🇷" },
-];
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -34,7 +28,7 @@ export function Header() {
   ];
 
   // Strip locale prefix from pathname for active detection
-  const pathWithoutLocale = pathname.replace(/^\/(ja|en|zh|es|pt)/, "") || "/";
+  const pathWithoutLocale = stripLocalePrefix(pathname);
 
   function getLocalizedHref(path: string) {
     return `/${locale}${path}`;
@@ -85,7 +79,7 @@ export function Header() {
           </nav>
           {/* Language Switcher (full reload to avoid stale client-side i18n cache) */}
           <div className="ml-2 flex items-center gap-1 border-l border-slate-200 pl-3">
-            {languages.map((lang) => (
+            {LANGUAGES.map((lang) => (
               <a
                 key={lang.code}
                 href={switchLocaleHref(lang.code)}
@@ -181,7 +175,7 @@ export function Header() {
             {t("language")}
           </p>
           <div className="grid grid-cols-2 gap-2">
-            {languages.map((lang) => (
+            {LANGUAGES.map((lang) => (
               <a
                 key={lang.code}
                 href={switchLocaleHref(lang.code)}

@@ -3,15 +3,20 @@ import { LinkButton } from "@/components/LinkButton";
 import { FeatureCards } from "@/components/FeatureCards";
 import { HeroSection } from "@/components/HeroSection";
 import { ServiceOverview } from "@/components/ServiceOverview";
+import { TrustedReferralSection } from "@/components/TrustedReferralSection";
+import { AwardRecognitionSection } from "@/components/AwardRecognitionSection";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Home" });
-  return {
+  return pageMetadata({
+    locale,
+    path: "",
     title: t("metaTitle"),
     description: t("metaDescription"),
-  };
+  });
 }
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
@@ -24,6 +29,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     <>
       {/* Hero */}
       <HeroSection />
+
+      {/* 神奈川を代表する企業100選（ファーストビュー直下） */}
+      <AwardRecognitionSection />
 
       {/* Service Overview */}
       <ServiceOverview />
@@ -49,81 +57,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
 
-      {/* 信頼の紹介 */}
-      <section className="py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <p className="mb-8 text-center text-[15px] font-bold leading-[1.6] text-slate-700 sm:text-[24px] lg:text-[28px]">
-            <span className="mr-2 hidden text-slate-800 sm:inline">＼</span>
-            {t("trustedDesc1")}<br className="sm:hidden" />
-            <span className="text-[1.15em] font-black text-santo-blue">{t("trustedDescHighlight")}</span>
-            {t("trustedDesc2")}
-            <span className="ml-2 hidden text-slate-800 sm:inline">／</span>
-          </p>
-          <div className="-mx-4 overflow-visible bg-[#5ba3d9] sm:mx-auto sm:max-w-5xl sm:overflow-hidden sm:rounded-2xl">
-            <div className="relative flex items-center justify-center px-4 py-4 sm:py-5 lg:py-6">
-              {/* 左カード */}
-              <a
-                href="https://haken-matching.jp/haken-comparison/kanagawa/196/#:~:text=株式会社%20サントー"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute left-[2%] z-30 w-[35%] -rotate-6 overflow-hidden rounded-xl shadow-2xl transition-all duration-300 hover:scale-[1.15] hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:left-[1%] sm:w-[37%] sm:hover:scale-110"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/hojin_haken_matching_ranking.png"
-                  alt="神奈川の人材派遣会社おすすめランキング"
-                  className="w-full"
-                />
-              </a>
-
-              {/* 中央テキスト（丸い破線枠） */}
-              <div className="relative z-10 flex flex-col items-center rounded-full border-[2px] border-dashed border-white bg-white/95 px-3 py-2.5 shadow-lg sm:border-[3px] sm:px-10 sm:py-6 lg:px-14 lg:py-8">
-                <span className="mb-1 inline-block rounded-md bg-[#f5c518] px-2 py-0.5 text-[8px] font-black tracking-widest text-slate-900 shadow-sm sm:mb-2 sm:px-5 sm:py-1 sm:text-[14px]">
-                  CHECK!
-                </span>
-                <p className="text-center text-[12px] leading-[1.3] tracking-wider text-santo-navy sm:text-[22px] sm:leading-[1.4] lg:text-[28px]" style={{ fontWeight: 900, WebkitTextStroke: "0.5px currentColor" }}>
-                  {t("trustedCheckText").split("\n").map((line, i, arr) => (
-                    <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
-                  ))}
-                </p>
-              </div>
-
-              {/* 右カード */}
-              <a
-                href="https://find-bestwork.com/chiiki/kanagawa/100006/#:~:text=株式会社サントー"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute right-[2%] z-30 w-[33%] rotate-6 overflow-hidden rounded-xl shadow-2xl transition-all duration-300 hover:scale-[1.15] hover:shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:right-[1%] sm:w-[35%] sm:hover:scale-110"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/hashtag_shushoku_expanded_v2.png"
-                  alt="#就職しよう"
-                  className="w-full"
-                />
-              </a>
-            </div>
-          </div>
-          <div className="mt-6 flex flex-row items-stretch justify-center gap-2 sm:gap-4">
-            <a
-              href="https://haken-matching.jp/haken-comparison/kanagawa/196/#:~:text=株式会社%20サントー"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-santo-navy px-3 py-3 text-center text-[13px] font-bold tracking-wide text-white shadow-sm transition hover:bg-santo-blue sm:flex-none sm:px-10 sm:py-4 sm:text-[18px]"
-            >
-              {t("trustedButtonMatching")}
-            </a>
-            <a
-              href="https://find-bestwork.com/chiiki/kanagawa/100006/#:~:text=株式会社サントー"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#e89b0c] px-3 py-3 text-center text-[13px] font-bold tracking-wide text-white shadow-sm transition hover:bg-[#d08a0a] sm:flex-none sm:px-10 sm:py-4 sm:text-[18px]"
-            >
-              {t("trustedButtonShushoku")}
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* 信頼の紹介（既存位置） */}
+      <TrustedReferralSection />
 
       {/* CTA Section */}
       <section className="relative overflow-hidden">

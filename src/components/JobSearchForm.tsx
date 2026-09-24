@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Search, ChevronDown, Check } from "lucide-react";
 
 /* ── 共通アコーディオンドロップダウン ── */
@@ -119,30 +119,6 @@ function AccordionSelect({
 
 /* ══════════════════════════════════ MAIN ══════════════════════════════════ */
 
-function getInitialSearchState() {
-  if (typeof window === "undefined") {
-    return {
-      freeword: "",
-      selectedAreas: [] as string[],
-      selectedJobTypes: [] as string[],
-      features: [] as string[],
-    };
-  }
-
-  const sp = new URLSearchParams(window.location.search);
-  const splitParam = (name: string) => {
-    const v = sp.get(name);
-    return v ? v.split(",").map((s) => s.trim()).filter(Boolean) : [];
-  };
-
-  return {
-    freeword: sp.get("q") ?? "",
-    selectedAreas: splitParam("area"),
-    selectedJobTypes: splitParam("jobType"),
-    features: splitParam("features"),
-  };
-}
-
 export function JobSearchForm() {
   const t = useTranslations("JobSearch");
   const locale = useLocale();
@@ -150,12 +126,22 @@ export function JobSearchForm() {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
+  // useSearchParams は呼び出し元の Suspense 境界でクライアント描画に
+  // 委ねられるため、window を直接読む方式と違いハイドレーション
+  // 不一致が起きない
+  const searchParams = useSearchParams();
+  const splitParam = (name: string) => {
+    const v = searchParams.get(name);
+    return v ? v.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  };
+
   const [openField, setOpenField] = useState<string | null>(null);
-  const initialSearchState = getInitialSearchState();
-  const [freeword, setFreeword] = useState<string>(initialSearchState.freeword);
-  const [selectedAreas, setSelectedAreas] = useState<string[]>(initialSearchState.selectedAreas);
-  const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>(initialSearchState.selectedJobTypes);
-  const [features, setFeatures] = useState<string[]>(initialSearchState.features);
+  const [freeword, setFreeword] = useState<string>(() => searchParams.get("q") ?? "");
+  const [selectedAreas, setSelectedAreas] = useState<string[]>(() => splitParam("area"));
+  const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>(() => splitParam("jobType"));
+  const [selectedEmployment, setSelectedEmployment] = useState<string[]>(() => splitParam("employment"));
+  const [selectedWorkSchedules, setSelectedWorkSchedules] = useState<string[]>(() => splitParam("workSchedule"));
+  const [features, setFeatures] = useState<string[]>(() => splitParam("features"));
 
   const areaOptions = [
     { key: "atsugi", label: t("areaAtsugi") },
@@ -184,6 +170,18 @@ export function JobSearchForm() {
     { key: "forklift", label: t("jtForklift") },
     { key: "line", label: t("jtLine") },
     { key: "plc", label: t("jtPlc") },
+  ];
+
+  const employmentOptions = [
+    { key: "dispatch", label: t("empDispatch") },
+    { key: "fulltime", label: t("empFulltime") },
+    { key: "contract", label: t("empContract") },
+    { key: "parttime", label: t("empParttime") },
+  ];
+
+  const workScheduleOptions = [
+    { key: "day", label: t("scheduleDay") },
+    { key: "night", label: t("scheduleNight") },
   ];
 
   const featureOptions = [
@@ -250,6 +248,26 @@ export function JobSearchForm() {
           onToggleOpen={() => handleToggle("jobType")}
         />
         <AccordionSelect
+          label={t("employmentType")}
+          emptyLabel={t("notSelected")}
+          options={employmentOptions}
+          selected={selectedEmployment}
+          onSelect={(key) => setSelectedEmployment((p) => toggleList(p, key))}
+          multiple
+          open={openField === "employment"}
+          onToggleOpen={() => handleToggle("employment")}
+        />
+        <AccordionSelect
+          label={t("workSchedule")}
+          emptyLabel={t("notSelected")}
+          options={workScheduleOptions}
+          selected={selectedWorkSchedules}
+          onSelect={(key) => setSelectedWorkSchedules((p) => toggleList(p, key))}
+          multiple
+          open={openField === "workSchedule"}
+          onToggleOpen={() => handleToggle("workSchedule")}
+        />
+        <AccordionSelect
           label={t("features")}
           emptyLabel={t("notSelected")}
           options={featureOptions}
@@ -266,7 +284,21 @@ export function JobSearchForm() {
               {t("freeword")}
             </span>
           </div>
-          <div className="flex min-w-0 flex-1 flex-col gap-2 px-5 py-2 sm:flex-row sm:items-center sm:gap-3 sm:px-6">
+          <form
+            className="flex min-w-0 flex-1 flex-col gap-2 px-5 py-2 sm:flex-row sm:items-center sm:gap-3 sm:px-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const params = new URLSearchParams();
+              if (selectedAreas.length) params.set("area", selectedAreas.join(","));
+              if (selectedJobTypes.length) params.set("jobType", selectedJobTypes.join(","));
+              if (selectedEmployment.length) params.set("employment", selectedEmployment.join(","));
+              if (selectedWorkSchedules.length) params.set("workSchedule", selectedWorkSchedules.join(","));
+              if (features.length) params.set("features", features.join(","));
+              if (freeword.trim()) params.set("q", freeword.trim());
+              const qs = params.toString();
+              router.push(`/${locale}/jobs${qs ? `?${qs}` : ""}`);
+            }}
+          >
             <input
               type="text"
               value={freeword}
@@ -275,21 +307,13 @@ export function JobSearchForm() {
               className="flex-1 rounded-lg border border-slate-200 bg-slate-50/80 px-4 py-2.5 text-[13px] text-slate-700 placeholder:text-slate-400 transition focus:border-santo-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-santo-blue/10 sm:text-[14px]"
             />
             <button
-              onClick={() => {
-                const params = new URLSearchParams();
-                if (selectedAreas.length) params.set("area", selectedAreas.join(","));
-                if (selectedJobTypes.length) params.set("jobType", selectedJobTypes.join(","));
-                if (features.length) params.set("features", features.join(","));
-                if (freeword.trim()) params.set("q", freeword.trim());
-                const qs = params.toString();
-                router.push(`/${locale}/jobs${qs ? `?${qs}` : ""}`);
-              }}
+              type="submit"
               className="flex shrink-0 items-center gap-2 rounded-lg bg-santo-navy px-5 py-2.5 text-[13px] font-bold tracking-wide text-white shadow-sm transition hover:bg-santo-blue sm:text-[14px]"
             >
               <Search className="h-4 w-4" />
               {t("search")}
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

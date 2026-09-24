@@ -5,8 +5,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { JobApplyForm } from "@/components/JobApplyForm";
+import { JOB_IDS } from "@/lib/jobs";
 
-const JOB_IDS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"];
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
@@ -29,7 +29,10 @@ export async function generateMetadata({
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "Jobs" });
   const a = await getTranslations({ locale, namespace: "JobApply" });
-  return { title: `${a("pageTitle")} | ${t(`job${id}Title` as never)}` };
+  return {
+    title: `${a("pageTitle")} | ${t(`job${id}Title` as never)}`,
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function JobApplyPage({

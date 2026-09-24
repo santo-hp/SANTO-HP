@@ -1,13 +1,4 @@
 {
-  "Gate": {
-    "title": "Welcome to SANTO",
-    "subtitle": "What are you looking for?",
-    "employers": "For Employers",
-    "employersDesc": "We propose the best talent for your company",
-    "jobseekers": "For Job Seekers",
-    "jobseekersDesc": "Find the right job for you",
-    "skip": "Go to Top Page"
-  },
   "Header": {
     "home": "Home",
     "about": "About Us",
@@ -70,7 +61,9 @@
     "trustedImagePlaceholder": "Image",
     "trustedCheckText": "Featured in\nmultiple staffing\nagency rankings\nacross various sites!",
     "trustedButtonMatching": "View on Haken Matching",
+    "trustedButtonMadeInLocal": "View on MADE IN LOCAL",
     "trustedButtonShushoku": "View on #Shushoku Shiyo",
+    "awardImageAlt": "Selected as one of Kanagawa's 100 Leading Companies for 2026-2027",
     "ctaJobseekersBullet1": "Wide range of positions: manufacturing, logistics, office",
     "ctaJobseekersBullet2": "No experience required, thorough support",
     "ctaJobseekersBullet3": "Full social insurance and paid leave",
@@ -100,7 +93,8 @@
     "dispatchTitle": "Staffing Services",
     "dispatchDesc": "As the staffing agency, SANTO handles everything from recruitment to payroll and labor management. You can focus solely on directing staff, significantly reducing costs and effort.",
     "outsourcingTitle": "Outsourcing Services",
-    "outsourcingDesc": "Our outsourcing service handles entire operations. We assign production managers and provide comprehensive support from staff management to quality control."
+    "outsourcingDesc": "Our outsourcing service handles entire operations. We assign production managers and provide comprehensive support from staff management to quality control.",
+    "cardDotLabel": "Show card {number}"
   },
   "FeatureCards": {
     "problem1": "I'm worried about working\nas a temp for the first time...",
@@ -111,7 +105,8 @@
     "solution2Desc": "We respond quickly to your needs and promptly propose the best talent. We flexibly handle urgent staffing requirements.",
     "problem3": "We can't find people\nwith the right skills...",
     "solution3Title": "Extensive Talent Network",
-    "solution3Desc": "We maintain a diverse pool of talent across manufacturing, logistics, and office roles. We match the right people to your exact needs."
+    "solution3Desc": "We maintain a diverse pool of talent across manufacturing, logistics, and office roles. We match the right people to your exact needs.",
+    "cardDotLabel": "Show card {number}"
   },
   "NewsScroller": {
     "label": "News",
@@ -236,6 +231,9 @@
     "salaryFrom1800": "¥1,800+",
     "salaryFrom2000": "¥2,000+",
     "employmentType": "Employment Type",
+    "workSchedule": "Work Schedule",
+    "scheduleDay": "Day Shift",
+    "scheduleNight": "Night Shift Available",
     "workPeriod": "Work Period",
     "features": "Features",
     "freeword": "Keyword",
@@ -502,7 +500,8 @@
     "telValue": "0463-24-1722",
     "hoursLabel": "Business Hours",
     "hoursValue": "Monday – Friday 8:00 – 17:00",
-    "hoursNote": "* Closed on weekends and public holidays"
+    "hoursNote": "* Closed on weekends and public holidays",
+    "mapTitle": "Location of SANTO Co., Ltd."
   },
   "Contact": {
     "metaTitle": "Contact Us | SANTO CO., LTD.",
@@ -950,26 +949,12 @@
     "copiedLabel": "Copied",
     "goToThanks": "Go to confirmation page"
   },
-  "JobThanks": {
-    "pageLabel": "THANK YOU",
-    "pageTitle": "Please finish sending your email",
-    "pageDesc": "Your application is not complete on this page alone. Please review the email and press Send in your email app.",
-    "jobSectionLabel": "POSITION TO APPLY FOR",
-    "nextStepsTitle": "Next Steps",
-    "nextStep1": "If your email client opened, please send the pre-filled email.",
-    "nextStep2": "After you send the email, our staff will review it and contact you.",
-    "nextStep3": "For urgent matters, please call 0463-24-1722.",
-    "backToJobs": "Back to Job List",
-    "callButton": "Call Us"
-  },
   "LaborInfo": {
     "metaTitle": "Worker Dispatching Disclosure | SANTO CO., LTD.",
     "metaDescription": "Disclosure under Article 23(5) of Japan's Worker Dispatching Act, including margin rate, training and career consultation information.",
     "pageLabel": "DISCLOSURE",
     "pageTitle": "Margin Rate Disclosure under the Amended Dispatching Act",
     "pageSubtitle": "The following information is disclosed pursuant to Article 23, Paragraph 5 of the Worker Dispatching Act.",
-    "targetPeriod": "Target Period",
-    "targetPeriodValue": "FY2025–FY2026 (August 2024 – August 2025)",
     "marginFormulaTitle": "Margin Rate Formula",
     "marginFormulaDesc": "Margin Rate = (Average Dispatch Fee − Average Worker Wage) ÷ Average Dispatch Fee",
     "marginNote": "The margin includes statutory welfare costs and other expenses in addition to operating profit.",
@@ -977,7 +962,6 @@
     "marginChartLegalWelfare": "Statutory Welfare Costs",
     "marginChartOtherExpenses": "Other Expenses (Training, etc.)",
     "marginChartProfit": "Operating Profit",
-    "marginChartOtherDetail": "Training costs, welfare benefits, recruitment costs, labor management, office expenses, utilities, vehicle costs, etc.",
     "dispatchInfoTitle": "Dispatch Business Overview",
     "dispatchWorkers": "① Number of dispatched workers (daily average)",
     "dispatchWorkersValue": "89",
@@ -1052,8 +1036,10 @@
     "trainingRow7Wage": "Paid",
     "trainingRow7Hours": "24 hours",
     "agreementTitle": "⑦ Whether a labor-management agreement on treatment of dispatched workers has been concluded",
-    "agreementDesc": "A labor-management agreement has been concluded (expiration: March 2027)",
-    "agreementScope": "Scope of agreement: All dispatched employees"
+    "agreementScope": "Scope of agreement: All dispatched employees",
+    "targetPeriodNote": "(Target Period: FY2025–FY2026 (August 2024 – August 2025))",
+    "marginChartOtherNote": "(Training costs, welfare benefits, recruitment costs, labor management, office expenses, utilities, vehicle costs, etc.)",
+    "agreementNote": "* A labor-management agreement has been concluded (expiration: March 2027)"
   },
   "Privacy": {
     "metaTitle": "Privacy Policy | SANTO CO., LTD.",
