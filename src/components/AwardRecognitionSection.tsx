@@ -12,7 +12,7 @@ export async function AwardRecognitionSection() {
     <section className="overflow-hidden bg-white py-4 sm:py-6">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="-mx-4 sm:mx-auto sm:max-w-5xl">
-          <div className="-my-[5.5%] grid">
+          <div className="relative -my-[5.5%]">
             <Image
               src="/images/award-ribbon-blue-folded.png"
               width={2170}
@@ -21,16 +21,17 @@ export async function AwardRecognitionSection() {
               unoptimized
               alt=""
               aria-hidden
-              className="col-start-1 row-start-1 block h-auto w-full scale-[1.04]"
+              className="block h-auto w-full scale-[1.04]"
             />
+            {/* Center the artwork on the ribbon's front face, above the folds. */}
             <Image
               src="/images/kanagawa-best-100-companies-2026-2027.png"
               width={1600}
               height={533}
-              sizes="(min-width: 640px) 1024px, 100vw"
+              sizes="(min-width: 1088px) 676px, 66vw"
               unoptimized
               alt={t("awardImageAlt")}
-              className="relative z-10 col-start-1 row-start-1 block h-auto w-full scale-[0.8]"
+              className="absolute left-1/2 top-[42%] z-10 block h-auto w-[66%] -translate-x-1/2 -translate-y-1/2 [clip-path:inset(17%_3%_24%_3%)]"
             />
           </div>
           <div className="relative z-10 px-4 py-1 text-center sm:px-6 sm:py-1.5">
