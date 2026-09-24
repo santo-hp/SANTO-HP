@@ -8,7 +8,7 @@
 
 | 項目 | 技術 |
 |------|------|
-| フレームワーク | **Next.js 16** (App Router / Static Export) |
+| フレームワーク | **Next.js 16** (App Router / Node.jsサーバー) |
 | スタイリング | **Tailwind CSS v4** |
 | UIコンポーネント | **shadcn/ui v4** (base-ui ベース) |
 | フォント | **Zen Kaku Gothic New** (角ばったゴシック体) + **Inter** |
@@ -174,9 +174,7 @@ Vercel 推奨:
 npx vercel
 ```
 
-または静的エクスポート:
-```bash
-# next.config.ts に output: 'export' を追加後
-npm run build
-# out/ ディレクトリを任意のホスティングにアップロード
-```
+求人検索はサーバーで実行するため、Node.js実行環境で `npm run build` → `npm start` を使用してください。
+静的エクスポート（`output: 'export'`）には対応していません。
+
+Excel求人の更新・写真追加の手順は [data/README.md](data/README.md) を参照してください。

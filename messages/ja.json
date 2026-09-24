@@ -300,7 +300,10 @@
     "areaChigasaki": "茅ヶ崎市",
     "areaIsehara": "伊勢原市",
     "areaEbina": "海老名市",
-    "areaZama": "座間市"
+    "areaZama": "座間市",
+    "empNewgrad": "新卒",
+    "empOutsourcing": "業務委託",
+    "empOther": "その他"
   },
   "EmployerIndustries": {
     "cta": "最適な人材をご提案します",
@@ -664,7 +667,15 @@
     "noResults": "条件に一致する求人は見つかりませんでした。別のキーワードをお試しください。",
     "favoritesOnly": "お気に入りのみ",
     "showAll": "すべて表示",
-    "favoritesEmpty": "お気に入りに登録された求人はありません。各案件のスターをタップして登録できます。"
+    "favoritesEmpty": "お気に入りに登録された求人はありません。各案件のスターをタップして登録できます。",
+    "loading": "読み込み中…",
+    "loadError": "求人を読み込めませんでした。",
+    "retry": "再試行",
+    "pagination": "ページ切り替え",
+    "previousPage": "前へ",
+    "nextPage": "次へ",
+    "jobReference": "求人ID：{id}",
+    "sourceLanguageNote": "求人情報は日本語で掲載しています。"
   },
   "JobDetail": {
     "callButton": "電話する",

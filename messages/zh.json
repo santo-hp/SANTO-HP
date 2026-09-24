@@ -300,7 +300,10 @@
     "areaChigasaki": "茅崎市",
     "areaIsehara": "伊势原市",
     "areaEbina": "海老名市",
-    "areaZama": "座间市"
+    "areaZama": "座间市",
+    "empNewgrad": "应届毕业生",
+    "empOutsourcing": "业务委托",
+    "empOther": "其他"
   },
   "EmployerIndustries": {
     "cta": "为您推荐最佳人才",
@@ -664,7 +667,15 @@
     "noResults": "未找到符合条件的职位。请尝试其他关键词。",
     "favoritesOnly": "仅收藏",
     "showAll": "显示全部",
-    "favoritesEmpty": "您还没有收藏任何职位。点击职位上的星标即可收藏。"
+    "favoritesEmpty": "您还没有收藏任何职位。点击职位上的星标即可收藏。",
+    "loading": "加载中…",
+    "loadError": "无法加载职位。",
+    "retry": "重试",
+    "pagination": "分页",
+    "previousPage": "上一页",
+    "nextPage": "下一页",
+    "jobReference": "职位编号：{id}",
+    "sourceLanguageNote": "此职位信息以日语提供。"
   },
   "JobDetail": {
     "callButton": "电话咨询",

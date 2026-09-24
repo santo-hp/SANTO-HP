@@ -300,7 +300,10 @@
     "areaChigasaki": "Chigasaki",
     "areaIsehara": "Isehara",
     "areaEbina": "Ebina",
-    "areaZama": "Zama"
+    "areaZama": "Zama",
+    "empNewgrad": "Recién graduados",
+    "empOutsourcing": "Servicios independientes",
+    "empOther": "Otros"
   },
   "EmployerIndustries": {
     "cta": "Le Proponemos el Talento Adecuado",
@@ -664,7 +667,15 @@
     "noResults": "No se encontraron empleos que coincidan con la búsqueda. Prueba con otras palabras clave.",
     "favoritesOnly": "Solo favoritos",
     "showAll": "Mostrar todos",
-    "favoritesEmpty": "Aún no has marcado ningún empleo como favorito. Toca la estrella en cualquier anuncio para agregarlo."
+    "favoritesEmpty": "Aún no has marcado ningún empleo como favorito. Toca la estrella en cualquier anuncio para agregarlo.",
+    "loading": "Cargando…",
+    "loadError": "No se pudieron cargar las ofertas.",
+    "retry": "Reintentar",
+    "pagination": "Paginación",
+    "previousPage": "Anterior",
+    "nextPage": "Siguiente",
+    "jobReference": "ID de oferta: {id}",
+    "sourceLanguageNote": "Esta oferta está disponible en japonés."
   },
   "JobDetail": {
     "callButton": "Llamar",

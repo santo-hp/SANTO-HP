@@ -1,142 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Star } from "lucide-react";
 import Link from "next/link";
-import { JOB_IDS } from "@/lib/jobs";
+import type { JobResults } from "@/lib/job-types";
 
-// 各求人のフィルタ用メタデータ（言語非依存）
-// area/line/jobType のキーは JobSearchForm と一致させている
-type JobMeta = {
-  area: string[];        // areaOptions keys
-  line: string[];        // lineOptions keys
-  jobType: string[];     // jobTypeOptions keys
-  hourlyMin: number;     // 時給下限（円）
-  salaryTypes: string[]; // 支給区分（hourly/daily/monthly）
-  employment: string[];  // 雇用形態
-  period: string[];      // 勤務期間
-  features: string[];    // 特徴
-};
-
-const JOB_META: Record<number, JobMeta> = {
-  1:  { area: ["koto"], line: ["jr_east"], jobType: ["assembly"], hourlyMin: 1600, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  2:  { area: ["atsugi"], line: ["odakyu"], jobType: ["forklift"], hourlyMin: 1600, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation"] },
-  3:  { area: ["ota"], line: ["keikyu"], jobType: ["inspection"], hourlyMin: 1800, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  4:  { area: ["ota"], line: ["keikyu"], jobType: ["assembly","inspection"], hourlyMin: 1400, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  5:  { area: ["hadano"], line: ["odakyu"], jobType: ["press"], hourlyMin: 1300, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  6:  { area: ["ota"], line: ["keikyu"], jobType: ["press"], hourlyMin: 1300, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  7:  { area: ["atsugi"], line: ["odakyu","sagami"], jobType: ["plc"], hourlyMin: 2300, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation"] },
-  8:  { area: ["atsugi"], line: ["odakyu","sagami"], jobType: ["press","assembly"], hourlyMin: 1400, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  9:  { area: ["ota"], line: ["keikyu"], jobType: ["press","assembly"], hourlyMin: 1350, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  10: { area: ["atsugi"], line: ["odakyu"], jobType: ["assembly"], hourlyMin: 1600, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience","dormitory"] },
-  11: { area: ["sagamihara"], line: ["jr_east"], jobType: ["line"], hourlyMin: 1400, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  12: { area: ["sagamihara"], line: ["jr_east"], jobType: ["machine","line"], hourlyMin: 1600, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  13: { area: ["sagamihara"], line: ["jr_east"], jobType: ["machine","line"], hourlyMin: 1400, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  14: { area: ["sagamihara"], line: ["jr_east"], jobType: ["machine","line"], hourlyMin: 1600, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  15: { area: ["ayase"], line: ["sagami"], jobType: ["welding","assembly"], hourlyMin: 1400, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation","no_experience"] },
-  16: { area: ["samukawa"], line: ["jr_east"], jobType: ["inspection","line"], hourlyMin: 1900, salaryTypes: ["hourly","monthly"], employment: ["dispatch"], period: ["long"], features: ["transportation"] },
-};
-
-// 現在掲載中の求人を勤務時間帯で分類する。
-// 記載がない求人は日勤のみとして扱い、交替勤務には日勤帯と夜勤帯の両方を含める。
-const JOB_WORK_SCHEDULE: Record<number, string[]> = {
-  10: ["day", "night"],
-  11: ["day", "night"],
-  16: ["day", "night"],
-};
-
-export function JobList() {
+export function JobList({ initialResult, initialQuery }: { initialResult: JobResults; initialQuery: string }) {
   const t = useTranslations("Jobs");
   const locale = useLocale();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [favorites, setFavorites] = useState<number[]>([]);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
-
-  const toggleFav = (id: number) =>
-    setFavorites((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
-
-  const allJobs = JOB_IDS.map((jobId) => {
-    const id = parseInt(jobId, 10);
-    return {
-      id,
-      company: t(`job${id}Company` as never) as string,
-      title: t(`job${id}Title` as never) as string,
-      image: `/images/jobs/job${String(id).padStart(2, "0")}.png`,
-      salary: t(`job${id}Salary` as never) as string,
-      type: t(`job${id}Type` as never) as string,
-      shift: t(`job${id}Shift` as never) as string,
-      access: t(`job${id}Access` as never) as string,
-    };
-  });
-
-  // 検索パラメータをパース（カンマ区切り、no_preference は無視）
-  const parseParam = (name: string) =>
-    (searchParams.get(name) || "")
-      .split(",")
-      .map((s) => s.trim())
-      .filter((s) => s && s !== "no_preference");
-
-  const selArea = parseParam("area");
-  const selLine = parseParam("line");
-  const selJobType = parseParam("jobType");
-  const selEmployment = parseParam("employment");
-  const selWorkSchedule = parseParam("workSchedule");
-  const selSalary = parseParam("salary");
-  const selFeatures = parseParam("features");
-  const q = searchParams.get("q")?.trim() || "";
-
-  const activeFilters: string[] = [];
-  if (selArea.length) activeFilters.push(...selArea);
-  if (selLine.length) activeFilters.push(...selLine);
-  if (selJobType.length) activeFilters.push(...selJobType);
-  if (selEmployment.length) activeFilters.push(...selEmployment);
-  if (selWorkSchedule.length) activeFilters.push(...selWorkSchedule);
-  if (selSalary.length) activeFilters.push(...selSalary);
-  if (selFeatures.length) activeFilters.push(...selFeatures);
-  if (q) activeFilters.push(q);
-
-  // 各フィールドでの絞り込み: 各フィールド内は OR、フィールド間は AND
-  const jobs = allJobs.filter((job) => {
-    const meta = JOB_META[job.id];
-    if (!meta) return false;
-
-    if (showFavoritesOnly && !favorites.includes(job.id)) return false;
-
-    const anyIn = (selected: string[], pool: string[]) =>
-      selected.length === 0 || selected.some((s) => pool.includes(s));
-
-    if (!anyIn(selArea, meta.area)) return false;
-    if (!anyIn(selLine, meta.line)) return false;
-    if (!anyIn(selJobType, meta.jobType)) return false;
-    if (!anyIn(selEmployment, meta.employment)) return false;
-    if (!anyIn(selWorkSchedule, JOB_WORK_SCHEDULE[job.id] ?? ["day"])) return false;
-    if (!anyIn(selFeatures, meta.features)) return false;
-
-    // 給与レンジ: 選択された最小閾値以上の時給なら OK
-    if (selSalary.length > 0) {
-      const thresholds = selSalary.map((s) => parseInt(s, 10)).filter((n) => !isNaN(n));
-      if (thresholds.length > 0) {
-        const minThreshold = Math.min(...thresholds);
-        if (meta.hourlyMin < minThreshold) return false;
-      }
+  const [favoritePage, setFavoritePage] = useState(1);
+  const [response, setResponse] = useState<{ key: string; data?: JobResults; error?: boolean }>();
+  const [retry, setRetry] = useState(0);
+  const queryParams = new URLSearchParams(searchParams.toString());
+  queryParams.set("locale", locale);
+  if (showFavoritesOnly) {
+    queryParams.set("favorites", "1");
+    queryParams.set("ids", favorites.join(","));
+    queryParams.set("page", String(favoritePage));
+  }
+  const query = queryParams.toString();
+  const result = query === initialQuery ? initialResult : response?.key === query ? response.data : undefined;
+  const error = query !== initialQuery && response?.key === query && response.error;
+  useEffect(() => {
+    if (query === initialQuery) return;
+    const controller = new AbortController();
+    fetch(`/api/jobs/?${query}`, { signal: controller.signal })
+      .then(res => { if (!res.ok) throw new Error("Could not load jobs"); return res.json(); })
+      .then((data: JobResults) => setResponse({ key: query, data }))
+      .catch(err => { if (err.name !== "AbortError") setResponse({ key: query, error: true }); });
+    return () => controller.abort();
+  }, [query, initialQuery, retry]);
+  const jobs = result?.jobs || [];
+  const toggleFav = (id: number) => {
+    setFavorites(previous => previous.includes(id) ? previous.filter(value => value !== id) : [...previous, id]);
+  };
+  const changePage = (page: number) => {
+    if (showFavoritesOnly) setFavoritePage(page);
+    else {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", String(page));
+      router.push(`/${locale}/jobs/?${params}#job-results`, { scroll: false });
     }
-
-    // フリーワード: 表示フィールドを連結して部分一致（大文字小文字無視、スペース区切りで AND）
-    if (q) {
-      const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
-      if (terms.length > 0) {
-        const hay = `${job.company} ${job.title} ${job.salary} ${job.type} ${job.shift} ${job.access}`.toLowerCase();
-        if (!terms.every((term) => hay.includes(term))) return false;
-      }
-    }
-
-    return true;
-  });
-
+    document.getElementById("job-results")?.scrollIntoView({ behavior: "smooth" });
+  };
   return (
-    <section className="py-10 sm:py-14">
+    <section id="job-results" className="scroll-mt-24 py-10 sm:py-14" aria-busy={!result && !error}>
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         {/* 戻る + 件数 + お気に入り絞り込み */}
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -149,7 +63,7 @@ export function JobList() {
           </Link>
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => setShowFavoritesOnly((v) => !v)}
+              onClick={() => { setShowFavoritesOnly((v) => !v); setFavoritePage(1); }}
               className={`inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-[13px] font-bold tracking-wide transition ${
                 showFavoritesOnly
                   ? "border-orange-400 bg-orange-400 text-white hover:bg-orange-500"
@@ -166,18 +80,17 @@ export function JobList() {
               </span>
             </button>
             <p className="text-[14px] text-slate-500">
-              {t("resultCount", { count: jobs.length })}
-              {activeFilters.length > 0 && (
-                <span className="ml-2 text-slate-400">
-                  ({activeFilters.join(", ")})
-                </span>
-              )}
+              {result ? t("resultCount", { count: result.total }) : error ? "" : t("loading")}
             </p>
           </div>
         </div>
 
+        {error && <div role="alert" className="mb-6 rounded-lg border border-slate-200 p-6 text-center">
+          <p>{t("loadError")}</p>
+          <button onClick={() => { setResponse(undefined); setRetry(value => value + 1); }} className="mt-3 text-santo-navy underline">{t("retry")}</button>
+        </div>}
         {/* 未ヒット時 */}
-        {jobs.length === 0 && (
+        {result && jobs.length === 0 && (
           <div className="rounded-xl border border-slate-200 bg-white px-6 py-12 text-center text-[14px] text-slate-500">
             {showFavoritesOnly ? t("favoritesEmpty") : t("noResults")}
           </div>
@@ -200,17 +113,18 @@ export function JobList() {
               {/* ── メイン: 画像 + 右側コンテンツ ── */}
               <div className="flex flex-col sm:flex-row">
                 {/* サムネイル */}
-                <div className="shrink-0 p-4 sm:p-5">
+                {job.image && <div className="shrink-0 p-4 sm:p-5">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={job.image}
+                    loading="lazy"
                     alt={job.title}
                     className="h-[120px] w-full rounded object-cover sm:h-[130px] sm:w-[160px]"
                   />
-                </div>
+                </div>}
 
                 {/* 右側 */}
-                <div className="flex-1 px-4 pb-4 sm:py-4 sm:pl-0 sm:pr-5">
+                <div className={`min-w-0 flex-1 px-4 py-4 sm:pr-5 ${job.image ? "sm:pl-0" : "sm:pl-6"}`}>
                   {/* タイトル */}
                   <Link
                     href={`/${locale}/jobs/${job.id}`}
@@ -248,7 +162,7 @@ export function JobList() {
                         <span className="font-bold text-slate-600">{t("labelShift")}</span>
                       </div>
                       <div className="min-w-0 flex-1 px-3 py-2 text-slate-700 [text-wrap:balance] break-keep">
-                        {job.shift}
+                        <span className="whitespace-pre-line">{job.shift}</span>
                       </div>
                     </div>
                     {/* アクセス */}
@@ -269,7 +183,7 @@ export function JobList() {
               <div className="border-t border-slate-200 px-5 py-3 sm:px-6">
                 <div className="flex items-center gap-3">
                   <Link
-                    href={`/${locale}/jobs/${job.id}#apply`}
+                    href={`/${locale}/jobs/${job.id}/apply`}
                     className="flex-1 rounded-lg bg-santo-navy py-2.5 text-center text-[14px] font-bold tracking-wide text-white transition hover:bg-santo-blue"
                   >
                     {t("apply")}
@@ -282,6 +196,8 @@ export function JobList() {
                   </Link>
                   <button
                     onClick={() => toggleFav(job.id)}
+                    aria-label={`${t("favoritesOnly")}: ${job.title}`}
+                    aria-pressed={favorites.includes(job.id)}
                     className={`shrink-0 transition ${favorites.includes(job.id) ? "text-orange-400" : "text-slate-300 hover:text-orange-400"}`}
                   >
                     <Star
@@ -295,6 +211,13 @@ export function JobList() {
           ))}
         </div>
 
+        {result && result.pages > 1 && (
+          <nav aria-label={t("pagination")} className="mt-8 flex items-center justify-center gap-4">
+            <button disabled={result.page <= 1} onClick={() => changePage(result.page - 1)} className="rounded-lg border border-slate-200 px-5 py-3 text-santo-navy disabled:opacity-40">{t("previousPage")}</button>
+            <span className="text-sm text-slate-600">{result.page} / {result.pages}</span>
+            <button disabled={result.page >= result.pages} onClick={() => changePage(result.page + 1)} className="rounded-lg border border-slate-200 px-5 py-3 text-santo-navy disabled:opacity-40">{t("nextPage")}</button>
+          </nav>
+        )}
         {/* CTA */}
         <div className="mt-12 rounded-2xl bg-[#dce8f5] p-8 text-center sm:p-12">
           <h2 className="whitespace-nowrap text-lg font-black tracking-wider text-slate-800 sm:whitespace-normal sm:text-2xl">

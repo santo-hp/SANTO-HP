@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { JobApplyForm } from "@/components/JobApplyForm";
 import { JOB_IDS } from "@/lib/jobs";
+import { getImportedJob } from "@/lib/job-catalog";
 
 
 export function generateStaticParams() {
@@ -15,7 +16,7 @@ export function generateStaticParams() {
 }
 
 export const dynamic = "force-static";
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
@@ -23,14 +24,15 @@ export async function generateMetadata({
   params: Promise<{ locale: string; id: string }>;
 }): Promise<Metadata> {
   const { locale, id } = await params;
-  if (!JOB_IDS.includes(id)) {
+  const imported = getImportedJob(id);
+  if (!imported && !JOB_IDS.includes(id)) {
     notFound();
   }
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "Jobs" });
   const a = await getTranslations({ locale, namespace: "JobApply" });
   return {
-    title: `${a("pageTitle")} | ${t(`job${id}Title` as never)}`,
+    title: `${a("pageTitle")} | ${imported?.title ?? t(`job${id}Title` as never)}`,
     robots: { index: false, follow: false },
   };
 }
@@ -41,7 +43,8 @@ export default async function JobApplyPage({
   params: Promise<{ locale: string; id: string }>;
 }) {
   const { locale, id } = await params;
-  if (!JOB_IDS.includes(id)) {
+  const imported = getImportedJob(id);
+  if (!imported && !JOB_IDS.includes(id)) {
     notFound();
   }
   setRequestLocale(locale);
@@ -49,8 +52,8 @@ export default async function JobApplyPage({
   const t = await getTranslations({ locale, namespace: "Jobs" });
   const a = await getTranslations({ locale, namespace: "JobApply" });
 
-  const jobTitle = t(`job${id}Title` as never) as string;
-  const jobCompany = t(`job${id}Company` as never) as string;
+  const jobTitle = imported?.title ?? t(`job${id}Title` as never) as string;
+  const jobCompany = imported ? "" : t(`job${id}Company` as never) as string;
 
   return (
     <div className="bg-white text-slate-800">

@@ -5,6 +5,8 @@ import { useTranslations, useLocale } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, ChevronDown, Check } from "lucide-react";
 
+import jobOptions from "@/data/job-options.json";
+
 /* ── 共通アコーディオンドロップダウン ── */
 function AccordionSelect({
   label,
@@ -85,7 +87,7 @@ function AccordionSelect({
 
           {open && (
             <div className="border-t border-slate-100 bg-slate-50/50 px-5 pb-2 pt-1 sm:px-6">
-              <div className="flex flex-col">
+              <div className="flex max-h-72 flex-col overflow-y-auto">
                 {options.map((opt) => {
                   const isSelected = selected.includes(opt.key);
                   return (
@@ -144,6 +146,7 @@ export function JobSearchForm() {
   const [features, setFeatures] = useState<string[]>(() => splitParam("features"));
 
   const areaOptions = [
+    ...jobOptions.areas.map(area => ({ key: `pref:${area}`, label: area })),
     { key: "atsugi", label: t("areaAtsugi") },
     { key: "ota", label: t("areaOta") },
     { key: "sagamihara", label: t("areaSagamihara") },
@@ -162,6 +165,7 @@ export function JobSearchForm() {
   ];
 
   const jobTypeOptions = [
+    ...jobOptions.categories.map(category => ({ key: `category:${category}`, label: category })),
     { key: "assembly", label: t("jtAssembly") },
     { key: "inspection", label: t("jtInspection") },
     { key: "press", label: t("jtPress") },
@@ -177,6 +181,9 @@ export function JobSearchForm() {
     { key: "fulltime", label: t("empFulltime") },
     { key: "contract", label: t("empContract") },
     { key: "parttime", label: t("empParttime") },
+    { key: "newgrad", label: t("empNewgrad") },
+    { key: "outsourcing", label: t("empOutsourcing") },
+    { key: "other", label: t("empOther") },
   ];
 
   const workScheduleOptions = [

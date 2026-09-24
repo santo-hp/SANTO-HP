@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { JOB_IDS } from "@/lib/jobs";
+import { allJobIds } from "@/lib/job-catalog";
 import { LOCALES, languageAlternates, localeUrl } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages: Array<Pick<StaticPage, "path" | "changeFrequency" | "priority">> = [
     ...STATIC_PAGES,
     // Job detail pages. Apply pages are intentionally excluded (noindex).
-    ...JOB_IDS.map((id) => ({
+    ...allJobIds.map((id) => ({
       path: `/jobs/${id}`,
       changeFrequency: "weekly" as ChangeFreq,
       priority: 0.8,

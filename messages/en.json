@@ -300,7 +300,10 @@
     "areaChigasaki": "Chigasaki",
     "areaIsehara": "Isehara",
     "areaEbina": "Ebina",
-    "areaZama": "Zama"
+    "areaZama": "Zama",
+    "empNewgrad": "New graduate",
+    "empOutsourcing": "Freelance / outsourcing",
+    "empOther": "Other"
   },
   "EmployerIndustries": {
     "cta": "We Propose the Right Talent",
@@ -664,7 +667,15 @@
     "noResults": "No jobs matched your search. Try different keywords.",
     "favoritesOnly": "Favorites only",
     "showAll": "Show all",
-    "favoritesEmpty": "You haven't favorited any jobs yet. Tap the star on a listing to add it."
+    "favoritesEmpty": "You haven't favorited any jobs yet. Tap the star on a listing to add it.",
+    "loading": "Loading…",
+    "loadError": "Unable to load jobs.",
+    "retry": "Retry",
+    "pagination": "Pagination",
+    "previousPage": "Previous",
+    "nextPage": "Next",
+    "jobReference": "Job ID: {id}",
+    "sourceLanguageNote": "This job listing is provided in Japanese."
   },
   "JobDetail": {
     "callButton": "Call",

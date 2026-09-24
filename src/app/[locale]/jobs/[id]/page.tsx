@@ -8,6 +8,8 @@ import { JobApplyModal } from "@/components/JobApplyModal";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { localeUrl, pageMetadata } from "@/lib/seo";
 import { JOB_IDS } from "@/lib/jobs";
+import { getImportedJob } from "@/lib/job-catalog";
+import { ImportedJobDetail } from "@/components/ImportedJobDetail";
 
 
 export function generateStaticParams() {
@@ -17,7 +19,7 @@ export function generateStaticParams() {
 }
 
 export const dynamic = "force-static";
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
@@ -25,6 +27,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string; id: string }>;
 }): Promise<Metadata> {
   const { locale, id } = await params;
+  const imported = getImportedJob(id);
+  if (imported) return pageMetadata({ locale, path: `/jobs/${id}`, title: imported.title, description: [imported.salary, imported.access, imported.fields['業務内容(概要)']].filter(Boolean).join('｜').slice(0, 180) });
+  if (!JOB_IDS.includes(id)) notFound();
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "Jobs" });
   const title = t(`job${id}Title` as never);
@@ -81,10 +86,12 @@ export default async function JobDetailPage({
   params: Promise<{ locale: string; id: string }>;
 }) {
   const { locale, id } = await params;
+  setRequestLocale(locale);
+  const imported = getImportedJob(id);
+  if (imported) return <ImportedJobDetail job={imported} locale={locale} />;
   if (!JOB_IDS.includes(id)) {
     notFound();
   }
-  setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: "Jobs" });
   const d = await getTranslations({ locale, namespace: "JobDetail" });
