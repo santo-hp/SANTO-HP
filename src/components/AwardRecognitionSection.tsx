@@ -14,9 +14,9 @@ export async function AwardRecognitionSection() {
         <div className="-mx-4 sm:mx-auto sm:max-w-5xl">
           <div className="-my-[5.5%] grid">
             <Image
-              src="/images/award-ribbon-background-v2.png"
-              width={1600}
-              height={533}
+              src="/images/award-ribbon-blue-folded.png"
+              width={2170}
+              height={725}
               sizes="(min-width: 640px) 1024px, 100vw"
               unoptimized
               alt=""
