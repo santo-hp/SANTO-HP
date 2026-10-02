@@ -9,6 +9,7 @@ import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { localeUrl, pageMetadata } from "@/lib/seo";
 import { JOB_IDS } from "@/lib/jobs";
 import { getImportedJob } from "@/lib/job-catalog";
+import { legacyJobImage } from "@/lib/job-images";
 import { ImportedJobDetail } from "@/components/ImportedJobDetail";
 
 
@@ -103,7 +104,7 @@ export default async function JobDetailPage({
     id: jobIndex,
     company: t(`${prefix}Company` as never),
     title: t(`${prefix}Title` as never),
-    image: `/images/jobs/job${String(jobIndex).padStart(2, "0")}.png`,
+    image: legacyJobImage(jobIndex),
     salary: t(`${prefix}Salary` as never),
     type: t(`${prefix}Type` as never),
     shift: t(`${prefix}Shift` as never),

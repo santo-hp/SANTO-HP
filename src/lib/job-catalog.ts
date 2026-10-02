@@ -4,6 +4,7 @@ import path from "node:path";
 import { getTranslations } from "next-intl/server";
 import { JOB_IDS } from "./jobs";
 import { JOB_META, JOB_WORK_SCHEDULE } from "./legacy-job-meta";
+import { importedJobImage, legacyJobImage } from "./job-images";
 import type { JobCard, JobResults } from "./job-types";
 
 type SourceRecord = Record<string, string>;
@@ -21,10 +22,10 @@ const importedJobs: ImportedJob[] = source.records.map((fields) => {
   const transport = [station, fields['公共交通機関1_交通手段'], fields['公共交通機関1_所要時間（分）'] ? `${fields['公共交通機関1_所要時間（分）']}分` : ''].filter(Boolean).join(' ');
   return {
     id, fields,
-    // The source has no employer-name or photo column. Do not invent either.
+    // The source has no employer name or workplace photo; use a category illustration.
     company: location,
     title: `【${fields['エリア名（市区町村）'] || fields['エリア名（都道府県）']}】${fields['職種名'] || fields['職種'] || fields['業務内容(概要)'].split(/\r?\n/)[0].slice(0, 80) || '求人情報'}`,
-    image: null,
+    image: importedJobImage(fields['職種'], fields['職種名'], fields['業務内容(概要)']),
     salary: [fields['給与形態'], money(fields['給与（月給/時給）'])].filter(Boolean).join(' '),
     type: fields['雇用形態'],
     shift: fields['就業時間'],
@@ -43,7 +44,7 @@ export function jobPhoto(id: number) {
 }
 export function getImportedJob(id: string) {
   const job = importedById.get(id);
-  return job ? { ...job, image: jobPhoto(job.id) } : undefined;
+  return job ? { ...job, image: jobPhoto(job.id) || job.image } : undefined;
 }
 
 const cities: Record<string, string> = {
@@ -109,7 +110,7 @@ export async function searchJobs(params: URLSearchParams, locale: string): Promi
   const t = await getTranslations({ locale, namespace: 'Jobs' });
   const legacy: JobCard[] = JOB_IDS.map(id => ({
     id: Number(id), company: t(`job${id}Company`), title: t(`job${id}Title`),
-    image: `/images/jobs/job${id.padStart(2, '0')}.png`,
+    image: legacyJobImage(Number(id)),
     salary: t(`job${id}Salary`), type: t(`job${id}Type`), shift: t(`job${id}Shift`), access: t(`job${id}Access`),
   }));
   const values = (key: string) => (params.get(key) || '').split(',').filter(v => v && v !== 'no_preference');
@@ -149,7 +150,7 @@ export async function searchJobs(params: URLSearchParams, locale: string): Promi
   const page = Math.max(1, Math.min(pages, Number.isFinite(requested) ? Math.floor(requested) : 1));
   const jobs = matches.slice((page - 1) * 20, page * 20).map(job => ({
     id: job.id, company: job.company, title: job.title, salary: job.salary, type: job.type,
-    shift: job.shift, access: job.access, image: importedById.has(String(job.id)) ? jobPhoto(job.id) : job.image,
+    shift: job.shift, access: job.access, image: importedById.has(String(job.id)) ? jobPhoto(job.id) || job.image : job.image,
   }));
   return { jobs, total: matches.length, page, pages };
 }
