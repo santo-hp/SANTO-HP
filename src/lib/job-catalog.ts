@@ -49,8 +49,17 @@ export function getImportedJob(id: string) {
 const cities: Record<string, string> = {
   atsugi: '厚木市', ota: '大田区', sagamihara: '相模原市', koto: '江東区', hadano: '秦野市', ayase: '綾瀬市', samukawa: '寒川町', yokohama: '横浜市', kawasaki: '川崎市', hiratsuka: '平塚市', fujisawa: '藤沢市', chigasaki: '茅ヶ崎市', isehara: '伊勢原市', ebina: '海老名市', zama: '座間市',
 };
+const parentCities = new Set(['横浜市', '川崎市', '相模原市']);
+function cityArea(value: string) {
+  if (!value.startsWith('city:')) return null;
+  const [prefecture, city] = value.slice(5).split(':');
+  return prefecture && city ? { prefecture, city } : null;
+}
+function cityMatches(actual: string, selected: string) {
+  return actual === selected || (parentCities.has(selected) && actual.startsWith(selected));
+}
 const jobWords: Record<string, RegExp> = {
-  assembly: /組立|組み立て|加工/, inspection: /検査|検品/, press: /プレス/, welding: /溶接/, machine: /機械|マシン|オペレーター/, forklift: /フォークリフト/, line: /ライン|製造/, plc: /PLC|シーケンサ/i,
+  assembly: /組立|組み立て|加工/, inspection: /検査|検品/, press: /プレス/, welding: /溶接/, machine: /機械(?:操作|オペレーター)|マシン(?:操作|オペレーター)|製造オペレーター/, forklift: /フォークリフト/, line: /ライン|製造/, plc: /PLC|シーケンサ/i,
 };
 const employmentWords: Record<string, RegExp> = {
   dispatch: /派遣/, fulltime: /正社員/, contract: /契約社員/, parttime: /アルバイト|パート/, newgrad: /^新卒$/, outsourcing: /^業務委託$/, other: /^その他$/,
@@ -59,8 +68,20 @@ const lineWords: Record<string, RegExp> = { jr_east: /JR|ＪＲ/, odakyu: /小�
 function importedMatches(job: ImportedJob, key: string, value: string): boolean {
   const f = job.fields;
   switch (key) {
-    case 'area': return value.startsWith('pref:') ? f['エリア名（都道府県）'] === value.slice(5) : !!cities[value] && f['エリア名（市区町村）'].includes(cities[value]);
-    case 'jobType': return value.startsWith('category:') ? f['職種'] === value.slice(9) : !!jobWords[value]?.test(f['職種名'] + ' ' + f['業務内容(概要)']);
+    case 'area': {
+      if (value.startsWith('pref:')) return f['エリア名（都道府県）'] === value.slice(5);
+      const selected = cityArea(value);
+      if (selected) return f['エリア名（都道府県）'] === selected.prefecture && cityMatches(f['エリア名（市区町村）'], selected.city);
+      return !!cities[value] && f['エリア名（市区町村）'].includes(cities[value]);
+    }
+    case 'jobType': {
+      if (value.startsWith('category:')) return f['職種'] === value.slice(9);
+      if (value === 'callcenter') {
+        return /コールセンター|カスタマーサポート|アポインター|テレアポ/.test(f['職種名'])
+          || /コールセンター業務|コールセンター・SV/.test(f['業務内容(概要)']);
+      }
+      return !!jobWords[value]?.test(f['職種名'] + ' ' + f['業務内容(概要)']);
+    }
     case 'employment': return !!employmentWords[value]?.test(f['雇用形態']);
     case 'line': return !!lineWords[value]?.test(f['公共交通機関1']);
     case 'workSchedule': {
@@ -110,6 +131,16 @@ export async function searchJobs(params: URLSearchParams, locale: string): Promi
       const meta = JOB_META[job.id];
       if (filter.key === 'workSchedule') return (JOB_WORK_SCHEDULE[job.id] || ['day']).includes(value);
       if (filter.key === 'area' && value.startsWith('pref:')) return (meta.area.some(area => ['ota', 'koto'].includes(area)) ? '東京都' : '神奈川県') === value.slice(5);
+      if (filter.key === 'area') {
+        const selected = cityArea(value);
+        if (selected) {
+          const prefecture = meta.area.some(area => ['ota', 'koto'].includes(area)) ? '東京都' : '神奈川県';
+          return selected.prefecture === prefecture && meta.area.some(area => {
+            const legacyCity = cities[area];
+            return legacyCity && (cityMatches(legacyCity, selected.city) || selected.city.endsWith(legacyCity));
+          });
+        }
+      }
       return (meta[filter.key as 'area' | 'jobType' | 'employment' | 'features' | 'line'] || []).includes(value);
     }));
   });

@@ -223,6 +223,8 @@
   },
   "JobSearch": {
     "area": "エリア",
+    "areaWhole": "{name}（全域）",
+    "areaSelectedCount": "{name}（{count}地域）",
     "jobType": "職種",
     "salary": "給与",
     "salaryFrom1200": "¥1,200〜",
@@ -267,6 +269,7 @@
     "jtInspection": "検査・梱包",
     "jtForklift": "フォークリフト",
     "jtMachine": "機械オペレーター",
+    "jtCallCenter": "コールセンター",
     "wpLong": "長期（3ヶ月以上）",
     "wpMedium": "中期（1〜3ヶ月）",
     "wpShort": "短期（1ヶ月以内）",

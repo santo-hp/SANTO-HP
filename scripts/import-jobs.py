@@ -53,6 +53,11 @@ def main():
     write(ROOT / 'data/imported-jobs.json', {'headers': headers, 'records': records})
     write(ROOT / 'src/data/job-options.json', {
         'areas': sorted({r['エリア名（都道府県）'] for r in records if r['エリア名（都道府県）']}),
+        'municipalities': {
+            area: sorted({r['エリア名（市区町村）'] for r in records
+                          if r['エリア名（都道府県）'] == area and r['エリア名（市区町村）']})
+            for area in sorted({r['エリア名（都道府県）'] for r in records if r['エリア名（都道府県）']})
+        },
         'categories': sorted({r['職種'] for r in records if r['職種']})
     })
     print(f'Imported {len(records)} jobs, {len(headers)} columns')

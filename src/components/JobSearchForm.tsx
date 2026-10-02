@@ -7,6 +7,88 @@ import { Search, ChevronDown, Check } from "lucide-react";
 
 import jobOptions from "@/data/job-options.json";
 
+const legacyAreas: Record<string, [string, string]> = {
+  atsugi: ["神奈川県", "厚木市"], ota: ["東京都", "大田区"], sagamihara: ["神奈川県", "相模原市"],
+  koto: ["東京都", "江東区"], hadano: ["神奈川県", "秦野市"], ayase: ["神奈川県", "綾瀬市"],
+  samukawa: ["神奈川県", "高座郡寒川町"], yokohama: ["神奈川県", "横浜市"],
+  kawasaki: ["神奈川県", "川崎市"], hiratsuka: ["神奈川県", "平塚市"],
+  fujisawa: ["神奈川県", "藤沢市"], chigasaki: ["神奈川県", "茅ヶ崎市"],
+  isehara: ["神奈川県", "伊勢原市"], ebina: ["神奈川県", "海老名市"],
+  zama: ["神奈川県", "座間市"],
+};
+
+function AreaSelect({ label, selected, onSelect }: {
+  label: string;
+  selected: string[];
+  onSelect: (key: string, prefecture: string) => void;
+}) {
+  const t = useTranslations("JobSearch");
+  const [openPrefecture, setOpenPrefecture] = useState<string | null>(null);
+  const municipalities = jobOptions.municipalities as Record<string, string[]>;
+
+  return (
+    <div className="flex border-b border-slate-100">
+      <div className="flex w-[100px] shrink-0 items-center border-r border-slate-100 px-4 py-2 sm:w-[120px] sm:px-5">
+        <span className="text-[13px] font-bold tracking-wide text-slate-700 sm:text-[14px]">{label}</span>
+      </div>
+      <div className="min-w-0 flex-1 px-5 py-2 sm:px-6">
+        <div className="grid grid-cols-2 gap-2">
+          {jobOptions.areas.map((prefecture) => {
+            const whole = selected.includes(`pref:${prefecture}`);
+            const cityCount = selected.filter(key => key.startsWith(`city:${prefecture}:`)).length;
+            const open = openPrefecture === prefecture;
+            return (
+              <button
+                key={prefecture}
+                type="button"
+                aria-expanded={open}
+                onClick={() => setOpenPrefecture(open ? null : prefecture)}
+                className={`flex items-center justify-between rounded-lg border px-3 py-2 text-left text-[13px] sm:text-[14px] ${open || whole || cityCount ? "border-santo-blue bg-santo-sky text-santo-navy" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+              >
+                <span className="min-w-0 truncate font-semibold">
+                  {whole ? t("areaWhole", { name: prefecture }) : cityCount ? t("areaSelectedCount", { name: prefecture, count: cityCount }) : prefecture}
+                </span>
+                <ChevronDown className={`ml-1 h-4 w-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
+              </button>
+            );
+          })}
+        </div>
+        {openPrefecture && (
+          <div id={`area-${openPrefecture}`} className="mt-2 rounded-lg border border-slate-100 bg-slate-50/70 p-2">
+            <div className="max-h-72 overflow-y-auto">
+              <label className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-[13px] font-semibold text-slate-700 hover:bg-white sm:text-[14px]">
+                <input
+                  type="checkbox"
+                  checked={selected.includes(`pref:${openPrefecture}`)}
+                  onChange={() => onSelect(`pref:${openPrefecture}`, openPrefecture)}
+                  className="h-4 w-4 accent-santo-blue"
+                />
+                {t("areaWhole", { name: openPrefecture })}
+              </label>
+              <div className="my-1 border-t border-slate-200" />
+              {municipalities[openPrefecture]?.map((city) => {
+                const key = `city:${openPrefecture}:${city}`;
+                const hasWards = municipalities[openPrefecture].some(other => other !== city && other.startsWith(city));
+                return (
+                  <label key={key} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-[13px] text-slate-600 hover:bg-white sm:text-[14px]">
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(key)}
+                      onChange={() => onSelect(key, openPrefecture)}
+                      className="h-4 w-4 accent-santo-blue"
+                    />
+                    {hasWards ? t("areaWhole", { name: city }) : city}
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ── 共通アコーディオンドロップダウン ── */
 function AccordionSelect({
   label,
@@ -139,30 +221,14 @@ export function JobSearchForm() {
 
   const [openField, setOpenField] = useState<string | null>(null);
   const [freeword, setFreeword] = useState<string>(() => searchParams.get("q") ?? "");
-  const [selectedAreas, setSelectedAreas] = useState<string[]>(() => splitParam("area"));
+  const [selectedAreas, setSelectedAreas] = useState<string[]>(() => splitParam("area").map(key => {
+    const legacy = legacyAreas[key];
+    return legacy ? `city:${legacy[0]}:${legacy[1]}` : key;
+  }));
   const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>(() => splitParam("jobType"));
   const [selectedEmployment, setSelectedEmployment] = useState<string[]>(() => splitParam("employment"));
   const [selectedWorkSchedules, setSelectedWorkSchedules] = useState<string[]>(() => splitParam("workSchedule"));
   const [features, setFeatures] = useState<string[]>(() => splitParam("features"));
-
-  const areaOptions = [
-    ...jobOptions.areas.map(area => ({ key: `pref:${area}`, label: area })),
-    { key: "atsugi", label: t("areaAtsugi") },
-    { key: "ota", label: t("areaOta") },
-    { key: "sagamihara", label: t("areaSagamihara") },
-    { key: "koto", label: t("areaKoto") },
-    { key: "hadano", label: t("areaHadano") },
-    { key: "ayase", label: t("areaAyase") },
-    { key: "samukawa", label: t("areaSamukawa") },
-    { key: "yokohama", label: t("areaYokohama") },
-    { key: "kawasaki", label: t("areaKawasaki") },
-    { key: "hiratsuka", label: t("areaHiratsuka") },
-    { key: "fujisawa", label: t("areaFujisawa") },
-    { key: "chigasaki", label: t("areaChigasaki") },
-    { key: "isehara", label: t("areaIsehara") },
-    { key: "ebina", label: t("areaEbina") },
-    { key: "zama", label: t("areaZama") },
-  ];
 
   const jobTypeOptions = [
     ...jobOptions.categories.map(category => ({ key: `category:${category}`, label: category })),
@@ -171,6 +237,7 @@ export function JobSearchForm() {
     { key: "press", label: t("jtPress") },
     { key: "welding", label: t("jtWelding") },
     { key: "machine", label: t("jtMachine") },
+    { key: "callcenter", label: t("jtCallCenter") },
     { key: "forklift", label: t("jtForklift") },
     { key: "line", label: t("jtLine") },
     { key: "plc", label: t("jtPlc") },
@@ -204,6 +271,20 @@ export function JobSearchForm() {
   const toggleList = (list: string[], key: string) =>
     list.includes(key) ? list.filter((k) => k !== key) : [...list, key];
 
+  const toggleArea = (key: string, prefecture: string) => {
+    setSelectedAreas(previous => {
+      const withoutPrefecture = previous.filter(value => value !== `pref:${prefecture}`);
+      if (key.startsWith("pref:")) {
+        return previous.includes(key)
+          ? previous.filter(value => value !== key)
+          : [...previous.filter(value => !value.startsWith(`city:${prefecture}:`)), key];
+      }
+      return withoutPrefecture.includes(key)
+        ? withoutPrefecture.filter(value => value !== key)
+        : [...withoutPrefecture, key];
+    });
+  };
+
   const handleToggle = (field: string) => {
     setOpenField((prev) => (prev === field ? null : field));
   };
@@ -234,15 +315,10 @@ export function JobSearchForm() {
       }}
     >
       <div className="overflow-hidden rounded-xl bg-white shadow-sm sm:rounded-2xl sm:shadow-[0_8px_40px_rgba(0,0,0,0.08)]">
-        <AccordionSelect
+        <AreaSelect
           label={t("area")}
-          emptyLabel={t("notSelected")}
-          options={areaOptions}
           selected={selectedAreas}
-          onSelect={(key) => setSelectedAreas((p) => toggleList(p, key))}
-          multiple
-          open={openField === "area"}
-          onToggleOpen={() => handleToggle("area")}
+          onSelect={toggleArea}
         />
         <AccordionSelect
           label={t("jobType")}

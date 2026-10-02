@@ -223,6 +223,8 @@
   },
   "JobSearch": {
     "area": "Região",
+    "areaWhole": "{name} (toda a região)",
+    "areaSelectedCount": "{name} ({count} regiões)",
     "jobType": "Tipo de Trabalho",
     "salary": "Salário",
     "salaryFrom1200": "¥1.200+",
@@ -267,6 +269,7 @@
     "jtInspection": "Inspeção e Embalagem",
     "jtForklift": "Empilhadeira",
     "jtMachine": "Operador de Máquinas",
+    "jtCallCenter": "Central de atendimento",
     "wpLong": "Longo prazo (3+ meses)",
     "wpMedium": "Médio prazo (1-3 meses)",
     "wpShort": "Curto prazo (menos de 1 mês)",

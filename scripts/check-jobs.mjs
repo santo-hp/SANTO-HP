@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const base = process.argv[2] || 'http://127.0.0.1:3000';
 const source = JSON.parse(await readFile(new URL('../data/imported-jobs.json', import.meta.url), 'utf8'));
+const options = JSON.parse(await readFile(new URL('../src/data/job-options.json', import.meta.url), 'utf8'));
 const records = source.records;
 const ids = records.map(row => row['求人ID']);
 assert.equal(new Set(ids).size, records.length, 'Duplicate job IDs');
@@ -30,6 +31,13 @@ const category = records[0]['職種'];
 const prefecture = records[0]['エリア名（都道府県）'];
 assert.equal((await query({ area: `pref:${prefecture}`, jobType: `category:${category}` })).total,
   records.filter(row => row['職種'] === category && row['エリア名（都道府県）'] === prefecture).length);
+assert(records.every(row => !row['エリア名（市区町村）'] ||
+  options.municipalities[row['エリア名（都道府県）']].includes(row['エリア名（市区町村）'])));
+assert.equal((await query({ area: 'city:東京都:港区' })).total,
+  records.filter(row => row['エリア名（都道府県）'] === '東京都' && row['エリア名（市区町村）'] === '港区').length);
+const callCenterId = records.find(row => row['職種名'].includes('コールセンター'))['求人ID'];
+assert.equal((await query({ favorites: '1', ids: callCenterId, jobType: 'callcenter' })).total, 1);
+assert.equal((await query({ favorites: '1', ids: callCenterId, jobType: 'machine' })).total, 0);
 assert.equal((await query({ favorites: '1', ids: ids.slice(0, 2).join(',') })).total, 2);
 assert.equal((await query({ favorites: '1', ids: '' })).total, 0);
 assert.equal((await query({ q: 'no-matching-job-xyz-987654321' })).total, 0);

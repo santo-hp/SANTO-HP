@@ -223,6 +223,8 @@
   },
   "JobSearch": {
     "area": "地区",
+    "areaWhole": "{name}（全域）",
+    "areaSelectedCount": "{name}（{count}个地区）",
     "jobType": "职种",
     "salary": "薪资",
     "salaryFrom1200": "¥1,200起",
@@ -267,6 +269,7 @@
     "jtInspection": "检查·包装",
     "jtForklift": "叉车",
     "jtMachine": "机械操作员",
+    "jtCallCenter": "呼叫中心",
     "wpLong": "长期（3个月以上）",
     "wpMedium": "中期（1-3个月）",
     "wpShort": "短期（1个月以内）",

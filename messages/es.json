@@ -223,6 +223,8 @@
   },
   "JobSearch": {
     "area": "Área",
+    "areaWhole": "{name} (toda la zona)",
+    "areaSelectedCount": "{name} ({count} zonas)",
     "jobType": "Tipo de Trabajo",
     "salary": "Salario",
     "salaryFrom1200": "¥1,200+",
@@ -267,6 +269,7 @@
     "jtInspection": "Inspección y Empaque",
     "jtForklift": "Montacargas",
     "jtMachine": "Operador de Maquinaria",
+    "jtCallCenter": "Centro de llamadas",
     "wpLong": "Largo plazo (3+ meses)",
     "wpMedium": "Medio plazo (1-3 meses)",
     "wpShort": "Corto plazo (menos de 1 mes)",
