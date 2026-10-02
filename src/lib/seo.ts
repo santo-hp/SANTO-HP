@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { routing } from "@/i18n/routing";
 
-export const SITE_BASE = "https://santo-hp.co.jp";
+export const SITE_BASE = "https://santo-hp.com";
 export const SITE_NAME = "株式会社サントー";
 export const LOCALES = routing.locales;
 export const DEFAULT_LOCALE = routing.defaultLocale;
