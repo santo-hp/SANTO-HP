@@ -25,7 +25,7 @@ const importedJobs: ImportedJob[] = source.records.map((fields) => {
     // The source has no employer name or workplace photo; use a category illustration.
     company: location,
     title: `【${fields['エリア名（市区町村）'] || fields['エリア名（都道府県）']}】${fields['職種名'] || fields['職種'] || fields['業務内容(概要)'].split(/\r?\n/)[0].slice(0, 80) || '求人情報'}`,
-    image: importedJobImage(fields['職種'], fields['職種名'], fields['業務内容(概要)']),
+    image: importedJobImage(fields['職種'], fields['職種名'], fields['業務内容(概要)'], fields['業務内容'], fields['求人ID']),
     salary: [fields['給与形態'], money(fields['給与（月給/時給）'])].filter(Boolean).join(' '),
     type: fields['雇用形態'],
     shift: fields['就業時間'],

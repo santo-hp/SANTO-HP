@@ -147,7 +147,7 @@ export default async function JobDetailPage({
         </div>
 
         {/* ══════ Hero Image ══════ */}
-        <div className="py-[10px]">
+        {job.image && <div className="py-[10px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={job.image}
@@ -155,7 +155,7 @@ export default async function JobDetailPage({
             className="w-full rounded-[10px] object-cover"
             style={{ maxHeight: 400 }}
           />
-        </div>
+        </div>}
 
         {/* ══════ 勤務地 ══════ */}
         <SectionHeading>{d("locationTitle")}</SectionHeading>

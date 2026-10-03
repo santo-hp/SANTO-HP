@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:job-images": "node scripts/audit-job-images.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
